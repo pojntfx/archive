@@ -4,6 +4,8 @@ services:
   provisioner:
     environment:
       - IPXESCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
+      - PRESEEDS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
+      - PRESEEDSCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
       - SERVICEDIR=src/services
       - SERVICES=*.js
     build: .

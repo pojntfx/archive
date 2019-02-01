@@ -17,7 +17,9 @@ module.exports = {
           "dnsmasq.status",
           "dnsmasq.logs",
           "dnsmasq.interfaces",
-          "ipxescripts.*"
+          "ipxescripts.*",
+          "preseeds.*",
+          "postseeds.*"
         ],
         aliases: {
           "POST bootmedia": "bootmedia.create",
@@ -31,7 +33,11 @@ module.exports = {
           "GET pxeboot/status": "dnsmasq.status",
           "GET pxeboot/logs": "dnsmasq.logs",
           "GET pxeboot/interfaces": "dnsmasq.interfaces",
-          "REST pxeboot/scripts": "ipxescripts"
+          "REST pxeboot/scripts": "ipxescripts",
+          "REST pxeboot/preseeds": "preseeds",
+          "REST pxeboot/postseeds": "postseeds"
+          // Don't forget to whitelist your service above! (keep
+          // this note to prevent endless pain)
         }
       }
     ]
