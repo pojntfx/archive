@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  provisioner:
+    environment:
+      - IPXESCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
+      - SERVICEDIR=src/services
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - .:/opt/pojntfx/os:z
+      - provisioner_node_modules:/opt/pojntfx/os/node_modules:z
+      - provisioner_tmp:/tmp/pojntfx/os:z
+    command: npm run start--watch
+    networks:
+      - main
+      - ipxescripts
+  dnsmasq:
+    environment:
+      - SERVICEDIR=src/services/dnsmasq
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - dnsmasq_node_modules:/opt/pojntfx/os/node_modules:z
+      - dnsmasq_tmp:/tmp/pojntfx/os:z
+      - dnsmasq_etc:/etc:z
+    command: npm run start--watch
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 57:57
+      - 67:67
+  gateway:
+    environment:
+      - SERVICEDIR=src/services/gateway
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - gateway_node_modules:/opt/pojntfx/os/node_modules:z
+    command: npm run start--watch
+    networks:
+      - main
+    ports:
+      - 3000:3000
+  ipxescripts_db:
+    environment:
+      - MARIADB_ROOT_PASSWORD=ipxescripts_db_root_password
+      - MARIADB_USER=ipxescripts_db_user
+      - MARIADB_PASSWORD=ipxescripts_db_password
+      - MARIADB_DATABASE=ipxescripts
+    image: bitnami/mariadb:10.2.21
+    volumes:
+      - ipxescripts_db:/bitnami/mariadb
+    networks:
+      - ipxescripts
+
+volumes:
+  provisioner_node_modules:
+  provisioner_tmp:
+  dnsmasq_node_modules:
+  dnsmasq_tmp:
+  dnsmasq_etc:
+  gateway_node_modules:
+  ipxescripts_db:
+
+networks:
+  main:
+  ipxescripts:
