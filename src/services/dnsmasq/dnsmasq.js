@@ -54,9 +54,13 @@ module.exports = {
       }
     },
     get: async () => get(`/tmp/pojntfx/os/script`),
-    start: async () => start(),
-    stop: async () => stop(),
-    status: async () => status(),
+    getStatus: async () => await status(),
+    setStatus: {
+      params: {
+        on: "boolean"
+      },
+      handler: async ctx => (ctx.params.on ? await start() : await stop())
+    },
     logs: async () => logs(),
     interfaces: async () => getInterfaces()
   }

@@ -12,9 +12,8 @@ module.exports = {
           "bootmedia.delete",
           "dnsmasq.set",
           "dnsmasq.get",
-          "dnsmasq.start",
-          "dnsmasq.stop",
-          "dnsmasq.status",
+          "dnsmasq.setStatus",
+          "dnsmasq.getStatus",
           "dnsmasq.logs",
           "dnsmasq.interfaces",
           "ipxescripts.*",
@@ -22,22 +21,25 @@ module.exports = {
           "postseeds.*"
         ],
         aliases: {
+          // bootmedia
           "POST bootmedia": "bootmedia.create",
           "GET bootmedia": "bootmedia.list",
           "GET bootmedia/:id": "bootmedia.get",
           "DELETE bootmedia/:id": "bootmedia.delete",
+          // pxeboot
           "PUT pxeboot": "dnsmasq.set",
           "GET pxeboot": "dnsmasq.get",
-          "POST pxeboot/on": "dnsmasq.start",
-          "POST pxeboot/off": "dnsmasq.stop",
-          "GET pxeboot/status": "dnsmasq.status",
+          "PUT pxeboot/status": "dnsmasq.setStatus",
+          "GET pxeboot/status": "dnsmasq.getStatus",
           "GET pxeboot/logs": "dnsmasq.logs",
           "GET pxeboot/interfaces": "dnsmasq.interfaces",
-          "REST pxeboot/scripts": "ipxescripts",
+          "REST pxeboot/mainscripts": "ipxescripts",
           "REST pxeboot/preseeds": "preseeds",
           "REST pxeboot/postseeds": "postseeds"
-          // Don't forget to whitelist your service above! (keep
-          // this note to prevent endless pain)
+          // Doesn't work?
+          // - Have you whitelisted the service above?
+          // - Try restarting the container
+          // (keep this note here to prevent pain)
         }
       }
     ]
