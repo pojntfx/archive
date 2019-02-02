@@ -1,4 +1,16 @@
-const shell = require("shelljs");
+const pm2 = require("pm2");
 
 module.exports.start = async () =>
-  shell.exec("pm2 start dnsmasq -- -k --log-dhcp --log-queries");
+  new Promise(resolve => {
+    pm2.connect(() => {
+      pm2.start(
+        {
+          script: "dnsmasq -k --log-dhcp --log-queries"
+        },
+        (_, res) => {
+          pm2.disconnect();
+          resolve(res);
+        }
+      );
+    });
+  });
