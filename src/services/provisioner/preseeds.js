@@ -18,5 +18,19 @@ module.exports = {
       title: "string",
       text: "string"
     }
+  },
+  actions: {
+    get: {
+      params: {
+        id: "string"
+      },
+      handler: async function(ctx) {
+        const res = await this.actions.find({
+          id: ctx.params.id
+        });
+        ctx.meta.$responseType = "text/plain";
+        return res[0].text;
+      }
+    }
   }
 };
