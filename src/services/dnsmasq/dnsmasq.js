@@ -7,6 +7,7 @@ const { logs } = require("../../utils/dnsmasq/logs");
 const { status } = require("../../utils/dnsmasq/status");
 const { init } = require("../../utils/dnsmasq/init");
 const { getInterfaces } = require("../../utils/dnsmasq/getInterfaces");
+const { MoleculerError } = require("moleculer").Errors;
 
 module.exports = {
   name: "dnsmasq",
@@ -68,7 +69,19 @@ module.exports = {
       },
       handler: async ctx => (ctx.params.on ? await start() : await stop())
     },
-    logs: async () => logs(),
+    logs: async ctx => {
+      ctx.meta.$responseType = "text/plain";
+      const res = await logs();
+      if (res !== false) {
+        return res;
+      } else {
+        throw new MoleculerError(
+          "The DNSMasq systemd service is not yet running",
+          404,
+          "LOGS_NOT_FOUND_SERVICE_NOT_RUNNING"
+        );
+      }
+    },
     interfaces: async () => getInterfaces()
   }
 };
