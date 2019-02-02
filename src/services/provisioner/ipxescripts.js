@@ -28,6 +28,7 @@ module.exports = {
         const res = await this.actions.find({
           id: ctx.params.id
         });
+        ctx.meta.$responseType = "text/plain";
         return res[0].text;
       }
     }
