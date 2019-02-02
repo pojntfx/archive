@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { createISO } = require("../utils/bootmedia/createISO");
+const { createISO } = require("../../utils/bootmedia/createISO");
 const uuid1 = require("uuid/v1");
 const shell = require("shelljs");
 const { MoleculerError } = require("moleculer").Errors;

@@ -5,6 +5,7 @@ const { start } = require("../../utils/dnsmasq/start");
 const { stop } = require("../../utils/dnsmasq/stop");
 const { logs } = require("../../utils/dnsmasq/logs");
 const { status } = require("../../utils/dnsmasq/status");
+const { init } = require("../../utils/dnsmasq/init");
 const { getInterfaces } = require("../../utils/dnsmasq/getInterfaces");
 
 module.exports = {
@@ -23,6 +24,8 @@ module.exports = {
         const iPXEUEFIPath = `${tempdir}/ipxe.efi`;
         const tftpDir = `${tempdir}/tftproot`;
         const scriptDir = `${tempdir}/script`;
+
+        await init(iPXEBIOSPath, iPXEUEFIPath, scriptDir);
 
         const ipxeBIOS = fs.createWriteStream(iPXEBIOSPath);
         const streamBIOS = await ctx.call("ipxe.create", {
@@ -43,13 +46,17 @@ module.exports = {
         streamUEFI.pipe(ipxeUEFI);
 
         return new Promise(resolve =>
-          set({
-            ...ctx.params,
-            tftpDir,
-            scriptDir,
-            iPXEBIOSPath,
-            iPXEUEFIPath
-          }).then(async () => resolve(await ctx.call("dnsmasq.get")))
+          ipxeBIOS.on("finish", () =>
+            ipxeUEFI.on("finish", () => {
+              set({
+                ...ctx.params,
+                tftpDir,
+                scriptDir,
+                iPXEBIOSPath,
+                iPXEUEFIPath
+              }).then(async () => resolve(await ctx.call("dnsmasq.get")));
+            })
+          )
         );
       }
     },

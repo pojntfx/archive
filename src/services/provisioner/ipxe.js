@@ -1,6 +1,6 @@
-const { createIPXE } = require("../utils/ipxe/createiPXE");
-const { check } = require("../utils/ipxe/check");
-const { clean } = require("../utils/ipxe/clean");
+const { createIPXE } = require("../../utils/ipxe/createiPXE");
+const { check } = require("../../utils/ipxe/check");
+const { clean } = require("../../utils/ipxe/clean");
 const fs = require("fs");
 const shell = require("shelljs");
 
@@ -16,10 +16,13 @@ module.exports = {
       },
       handler: async ctx =>
         fs.createReadStream(
-          await createIPXE({
-            tempdir: `/tmp/pojntfx/os`,
-            ...ctx.params
-          })
+          await createIPXE(
+            {
+              ...ctx.params,
+              tempdir: `/tmp/pojntfx/os`
+            },
+            { encoding: null }
+          )
         )
     },
     check: async () => ({

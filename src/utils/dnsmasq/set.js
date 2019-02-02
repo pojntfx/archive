@@ -59,7 +59,6 @@ module.exports.set = async ({
   iPXEBIOSPath,
   iPXEUEFIPath
 }) => {
-  await init(iPXEBIOSPath, iPXEUEFIPath, scriptDir);
   await setNetwork(interface);
   await copyiPXE(tftpDir, iPXEBIOSPath, iPXEUEFIPath);
   await writeScript(scriptDir, script);

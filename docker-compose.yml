@@ -6,7 +6,7 @@ services:
       - IPXESCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
       - PRESEEDS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
       - PRESEEDSCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
-      - SERVICEDIR=src/services
+      - SERVICEDIR=src/services/provisioner
       - SERVICES=*.js
     build: .
     volumes:
@@ -31,8 +31,9 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - 57:57
-      - 67:67
+      - "57:57"
+      - "67:67"
+      - "69:69"
   gateway:
     environment:
       - SERVICEDIR=src/services/gateway

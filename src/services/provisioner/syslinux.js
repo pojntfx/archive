@@ -1,4 +1,4 @@
-const { createSYSLINUX } = require("../utils/syslinux/createSYSLINUX");
+const { createSYSLINUX } = require("../../utils/syslinux/createSYSLINUX");
 const uuidv1 = require("uuid/v1");
 const fs = require("fs");
 
