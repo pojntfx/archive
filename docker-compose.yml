@@ -17,6 +17,8 @@ services:
     networks:
       - main
       - ipxescripts
+    depends_on:
+      - ipxescripts_db
   dnsmasq:
     environment:
       - SERVICEDIR=src/services/dnsmasq
@@ -46,6 +48,9 @@ services:
       - main
     ports:
       - 3000:3000
+    depends_on:
+      - dnsmasq
+      - provisioner
   ipxescripts_db:
     environment:
       - MARIADB_ROOT_PASSWORD=ipxescripts_db_root_password
