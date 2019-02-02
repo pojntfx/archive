@@ -1,4 +1,4 @@
-const { createGRUB } = require("../utils/grub/createGRUB");
+const { createGRUB } = require("../../utils/grub/createGRUB");
 const uuidv1 = require("uuid/v1");
 const fs = require("fs");
 

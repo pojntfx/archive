@@ -1,4 +1,4 @@
-const { createISO } = require("../utils/iso/createISO");
+const { createISO } = require("../../utils/iso/createISO");
 const uuidv1 = require("uuid/v1");
 const fs = require("fs");
 const shell = require("shelljs");

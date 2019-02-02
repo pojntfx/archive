@@ -28,6 +28,3 @@ ENV TRANSPORTER="TCP"
 
 # Start the app
 CMD npm start
-
-# Expose the app
-EXPOSE 3000 67 57
