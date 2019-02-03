@@ -103,6 +103,9 @@ module.exports = {
                   if (err) {
                     reject(err);
                   }
+                  tunnel.on("error", err =>
+                    this.logger.error(`localtunnel error: ${err}`)
+                  );
                   that[`TUNNEL_${tunnel.url}`] = tunnel;
                   const tunnelInDB = await ctx.call("gateway.create", {
                     domain: tunnel.url,
