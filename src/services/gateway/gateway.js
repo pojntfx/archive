@@ -46,7 +46,7 @@ module.exports = {
           "preseeds.*",
           "postseeds.*",
           "gateway.expose",
-          "gateway.list",
+          "gateway.getAll",
           "gateway.delete"
         ],
         aliases: {
@@ -66,7 +66,7 @@ module.exports = {
           "REST pxeboot/preseeds": "preseeds",
           "REST pxeboot/postseeds": "postseeds",
           "POST tunnels": "gateway.expose",
-          "GET tunnels": "gateway.list",
+          "GET tunnels": "gateway.getAll",
           "DELETE tunnels/:id": "gateway.delete"
           // Doesn't work?
           // - Have you whitelisted the service above?
@@ -104,7 +104,7 @@ module.exports = {
                     reject(err);
                   }
                   that[`TUNNEL_${tunnel.url}`] = tunnel;
-                  const tunnelInDB = await this.actions.create({
+                  const tunnelInDB = await ctx.call("gateway.create", {
                     domain: tunnel.url,
                     nodeId: localNode.id
                   });
@@ -122,15 +122,44 @@ module.exports = {
         }
       }
     },
+    getAll: async ctx => {
+      const tunnels = await ctx.call("gateway.list");
+      const tunnelsThatDontExistAnymore = [];
+
+      for (tunnel of tunnels.rows) {
+        if (
+          !(await ctx.call(
+            "gateway.tunnelExists",
+            {
+              domain: tunnel.domain
+            },
+            {
+              nodeId: tunnel.nodeId
+            }
+          ))
+        ) {
+          tunnelsThatDontExistAnymore.push(tunnel);
+        }
+      }
+
+      for (tunnel of tunnelsThatDontExistAnymore) {
+        await ctx.call("gateway.remove", {
+          id: tunnel.id
+        });
+      }
+
+      return await ctx.call("gateway.list");
+    },
     delete: {
       params: {
         id: "string"
       },
-      handler: async function(ctx) {
+      handler: async ctx => {
         try {
-          const tunnelInDb = await this.actions.remove({
+          const tunnelInDb = await ctx.call("gateway.remove", {
             id: ctx.params.id
           });
+
           await ctx.call(
             "gateway.unexpose",
             {
@@ -158,6 +187,14 @@ module.exports = {
       handler: async function(ctx) {
         const tunnel = this[`TUNNEL_${ctx.params.domain}`];
         return await tunnel.close();
+      }
+    },
+    tunnelExists: {
+      params: {
+        domain: "string"
+      },
+      handler: async function(ctx) {
+        return this.hasOwnProperty(`TUNNEL_${ctx.params.domain}`);
       }
     }
   }
