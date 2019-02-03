@@ -56,10 +56,12 @@ module.exports = {
         )
           ? {
               ...folder,
+              id: folder.name,
               containsBootMedium: true
             }
           : {
               ...folder,
+              id: folder.name,
               containsBootMedium: false
             }
       ),
