@@ -38,6 +38,7 @@ services:
       - "69:69"
   gateway:
     environment:
+      - GATEWAY_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
       - SERVICEDIR=src/services/gateway
       - SERVICES=*.js
     build: .
@@ -46,11 +47,13 @@ services:
     command: npm run start--watch
     networks:
       - main
+      - ipxescripts
     ports:
       - 3000:3000
     depends_on:
       - dnsmasq
       - provisioner
+      - ipxescripts_db
   ipxescripts_db:
     environment:
       - MARIADB_ROOT_PASSWORD=ipxescripts_db_root_password
