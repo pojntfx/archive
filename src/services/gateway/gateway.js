@@ -1,6 +1,8 @@
 const Gateway = require("moleculer-web");
+const localtunnel = require("localtunnel");
 
 module.exports = {
+  name: "gateway",
   mixins: [Gateway],
   settings: {
     routes: [
@@ -18,7 +20,9 @@ module.exports = {
           "dnsmasq.interfaces",
           "ipxescripts.*",
           "preseeds.*",
-          "postseeds.*"
+          "postseeds.*",
+          "gateway.expose",
+          "gateway.unexpose"
         ],
         aliases: {
           // bootmedia
@@ -43,5 +47,46 @@ module.exports = {
         }
       }
     ]
+  },
+  actions: {
+    expose: {
+      params: {
+        subdomain: "string"
+      },
+      handler: ctx => {
+        const that = this;
+        return new Promise(async function(resolve) {
+          const nodes = await ctx.call("$node.list");
+          const localNode = nodes.find(node => node.local);
+          localtunnel(
+            3000,
+            {
+              subdomain: ctx.params.subdomain
+            },
+            function(_, tunnel) {
+              that[`${tunnel.url}-${localNode.id}`] = tunnel;
+              resolve({
+                domain: tunnel.url,
+                nodeId: localNode.id
+              });
+            }
+          );
+        });
+      }
+    },
+    unexpose: {
+      params: {
+        domain: "string",
+        nodeId: "string"
+      },
+      handler: async ctx => {
+        const tunnel = this[`${ctx.params.domain}-${ctx.params.nodeId}`];
+        await tunnel.close();
+        return {
+          domain: ctx.params.domain,
+          nodeId: ctx.params.nodeId
+        };
+      }
+    }
   }
 };

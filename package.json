@@ -12,6 +12,7 @@
   "author": "Felicitas Pojtinger <felicitas@pojtinger.com>",
   "license": "AGPL-3.0",
   "dependencies": {
+    "localtunnel": "^1.9.1",
     "moleculer": "^0.13.5",
     "moleculer-db": "^0.7.7",
     "moleculer-db-adapter-sequelize": "^0.1.11",
