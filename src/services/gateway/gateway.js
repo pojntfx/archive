@@ -52,7 +52,12 @@ module.exports = {
           "dns.getScript",
           "dns.updateHosts",
           "dns.getHosts",
-          "dns.getPorts"
+          "dns.updateStatus",
+          "dns.getStatus",
+          "dns.getLogs",
+          "dns.getInterfaces",
+          "dns.getPorts",
+          "dns.getLookup"
         ],
         aliases: {
           // bootmedia
@@ -70,14 +75,21 @@ module.exports = {
           "REST pxeboot/mainscripts": "ipxescripts",
           "REST pxeboot/preseeds": "preseeds",
           "REST pxeboot/postseeds": "postseeds",
+          // tunnels
           "POST tunnels": "gateway.expose",
           "GET tunnels": "gateway.getAll",
           "DELETE tunnels/:id": "gateway.delete",
+          // dns
           "PUT dns/script": "dns.updateScript",
           "GET dns/script": "dns.getScript",
           "PUT dns/hosts": "dns.updateHosts",
           "GET dns/hosts": "dns.getHosts",
-          "GET dns/ports": "dns.getPorts"
+          "PUT dns/status": "dns.updateStatus",
+          "GET dns/status": "dns.getStatus",
+          "GET dns/logs": "dns.getLogs",
+          "GET dns/interfaces": "dns.getInterfaces",
+          "GET dns/ports": "dns.getPorts",
+          "GET dns/lookup": "dns.getLookup"
           // Doesn't work?
           // - Have you whitelisted the service above?
           // - Have you added the service as a dependency?

@@ -7,7 +7,7 @@ LABEL license="AGPL-3.0"
 
 # Update the system and install dependencies
 RUN dnf update -y
-RUN dnf install -y npm git gcc binutils make perl xz xz-devel mtools genisoimage flex bison xorriso iproute dnsmasq syslinux python autoconf automake dosfstools
+RUN dnf install -y npm git gcc binutils make perl xz xz-devel mtools genisoimage flex bison xorriso iproute dnsmasq syslinux python autoconf automake dosfstools bind-utils
 
 # Setup work dir
 RUN mkdir -p /opt/pojntfx/os
