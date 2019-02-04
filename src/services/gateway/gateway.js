@@ -47,7 +47,10 @@ module.exports = {
           "postseeds.*",
           "gateway.expose",
           "gateway.getAll",
-          "gateway.delete"
+          "gateway.delete",
+          "dns.updateScript",
+          "dns.getScript",
+          "dns.getPorts"
         ],
         aliases: {
           // bootmedia
@@ -67,7 +70,10 @@ module.exports = {
           "REST pxeboot/postseeds": "postseeds",
           "POST tunnels": "gateway.expose",
           "GET tunnels": "gateway.getAll",
-          "DELETE tunnels/:id": "gateway.delete"
+          "DELETE tunnels/:id": "gateway.delete",
+          "PUT dns/script": "dns.updateScript",
+          "GET dns/script": "dns.getScript",
+          "GET dns/ports": "dns.getPorts"
           // Doesn't work?
           // - Have you whitelisted the service above?
           // - Try restarting the container

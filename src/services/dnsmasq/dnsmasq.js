@@ -83,7 +83,7 @@ module.exports = {
         throw new MoleculerError(
           "The DNSMasq systemd service is not yet running",
           404,
-          "LOGS_NOT_FOUND_SERVICE_NOT_RUNNING"
+          "ERR_LOGS_NOT_FOUND_SERVICE_NOT_RUNNING"
         );
       }
     },

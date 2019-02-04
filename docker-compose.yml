@@ -36,6 +36,20 @@ services:
       - "57:57"
       - "67:67"
       - "69:69"
+  dns:
+    environment:
+      - SERVICEDIR=src/services/dns
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - dns_node_modules:/opt/pojntfx/os/node_modules:z
+      - dns_tmp:/tmp/pojntfx/os:z
+    command: npm run start--watch
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "53:53"
   gateway:
     environment:
       - GATEWAY_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
@@ -72,6 +86,8 @@ volumes:
   dnsmasq_node_modules:
   dnsmasq_tmp:
   dnsmasq_etc:
+  dns_node_modules:
+  dns_tmp:
   gateway_node_modules:
   ipxescripts_db:
 
