@@ -1,7 +1,7 @@
 {
   "name": "@pojntfx/provisioner",
   "version": "0.0.1-alpha0",
-  "description": "Felicitas Pojtinger's Provisioner",
+  "description": "Hosts as a service",
   "main": "src/index.js",
   "scripts": {
     "dev": "docker-compose up --build",
