@@ -10,9 +10,9 @@ services:
       - SERVICES=*.js
     build: .
     volumes:
-      - .:/opt/pojntfx/os:z
-      - provisioner_node_modules:/opt/pojntfx/os/node_modules:z
-      - provisioner_tmp:/tmp/pojntfx/os:z
+      - .:/opt/pojntfx/provisioner:z
+      - provisioner_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - provisioner_tmp:/tmp/pojntfx/provisioner:z
     command: npm run start--watch
     networks:
       - main
@@ -25,8 +25,8 @@ services:
       - SERVICES=*.js
     build: .
     volumes:
-      - pxeboot_node_modules:/opt/pojntfx/os/node_modules:z
-      - pxeboot_tmp:/tmp/pojntfx/os:z
+      - pxeboot_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - pxeboot_tmp:/tmp/pojntfx/provisioner:z
       - pxeboot_etc:/etc:z
     command: npm run start--watch
     network_mode: host
@@ -42,8 +42,8 @@ services:
       - SERVICES=*.js
     build: .
     volumes:
-      - dns_node_modules:/opt/pojntfx/os/node_modules:z
-      - dns_tmp:/tmp/pojntfx/os:z
+      - dns_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - dns_tmp:/tmp/pojntfx/provisioner:z
     command: npm run start--watch
     network_mode: host
     cap_add:
@@ -57,7 +57,7 @@ services:
       - SERVICES=*.js
     build: .
     volumes:
-      - gateway_node_modules:/opt/pojntfx/os/node_modules:z
+      - gateway_node_modules:/opt/pojntfx/provisioner/node_modules:z
     command: npm run start--watch
     networks:
       - main

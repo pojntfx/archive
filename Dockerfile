@@ -10,8 +10,8 @@ RUN dnf update -y
 RUN dnf install -y npm git gcc binutils make perl xz xz-devel mtools genisoimage flex bison xorriso iproute dnsmasq syslinux python autoconf automake dosfstools bind-utils
 
 # Setup work dir
-RUN mkdir -p /opt/pojntfx/os
-WORKDIR /opt/pojntfx/os
+RUN mkdir -p /opt/pojntfx/provisioner
+WORKDIR /opt/pojntfx/provisioner
 
 # Install dependencies
 COPY package.json .

@@ -60,8 +60,8 @@ const routes = [
       // bootmedia
       "POST bootmedia": "bootmedia.create",
       "GET bootmedia": "bootmedia.list",
-      "GET bootmedium/:id": "bootmedia.get",
-      "DELETE bootmedium/:id": "bootmedia.remove",
+      "GET bootmedia/:id": "bootmedia.get",
+      "DELETE bootmedia/:id": "bootmedia.remove",
       // pxeboot
       "PUT pxeboot/script": "pxeboot.updateScript",
       "GET pxeboot/script": "pxeboot.getScript",

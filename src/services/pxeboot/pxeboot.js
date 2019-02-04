@@ -22,7 +22,7 @@ module.exports = {
       handler: async ctx => {
         ctx.meta.$responseType = "text/plain";
 
-        const tempdir = `/tmp/pojntfx/os`;
+        const tempdir = `/tmp/pojntfx/provisioner/pxeboot`;
         const iPXEBIOSPath = `${tempdir}/undionly.kpxe`;
         const iPXEUEFIPath = `${tempdir}/ipxe.efi`;
         const tftpDir = `${tempdir}/tftproot`;
@@ -49,21 +49,25 @@ module.exports = {
         streamUEFI.pipe(ipxeUEFI);
 
         return new Promise(resolve =>
-          updateScript({
-            ...ctx.params,
-            tftpDir,
-            scriptDir,
-            iPXEBIOSPath,
-            iPXEUEFIPath,
-            tempdir: `/tmp/pojntfx/os/script`
-          }).then(async () => resolve(await ctx.call("pxeboot.getScript")))
+          ipxeBIOS.on("finish", () =>
+            ipxeUEFI.on("finish", () =>
+              updateScript({
+                ...ctx.params,
+                tftpDir,
+                scriptDir,
+                iPXEBIOSPath,
+                iPXEUEFIPath,
+                tempdir: `/tmp/pojntfx/provisioner/pxeboot/script`
+              }).then(async () => resolve(await ctx.call("pxeboot.getScript")))
+            )
+          )
         );
       }
     },
     getScript: async ctx => {
       ctx.meta.$responseType = "text/plain";
       ctx.meta.$responseType = "text/plain";
-      const script = await getScript(`/tmp/pojntfx/os/script`);
+      const script = await getScript(`/tmp/pojntfx/provisioner/pxeboot/script`);
       if (script !== false) {
         return script;
       } else {
@@ -81,7 +85,7 @@ module.exports = {
       handler: async ctx =>
         ctx.params.on
           ? await start({
-              tempdir: "/tmp/pojntfx/os/script",
+              tempdir: "/tmp/pojntfx/provisioner/pxeboot/script",
               name: "dnsmasq-pxeboot"
             })
           : await stop("dnsmasq-pxeboot")

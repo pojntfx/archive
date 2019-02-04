@@ -8,8 +8,8 @@ module.exports = {
   actions: {
     create: async ctx => {
       const uuid = uuidv1();
-      const indir = `/tmp/pojntfx/os/iso/${uuid}/in`;
-      const packagedir = `/tmp/pojntfx/os/iso/${uuid}/package`;
+      const indir = `/tmp/pojntfx/provisioner/iso/${uuid}/in`;
+      const packagedir = `/tmp/pojntfx/provisioner/iso/${uuid}/package`;
 
       shell.mkdir("-p", indir);
       shell.mkdir("-p", packagedir);

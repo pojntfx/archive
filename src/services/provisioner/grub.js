@@ -18,9 +18,9 @@ module.exports = {
         return fs.createReadStream(
           await createGRUB({
             ...ctx.params,
-            indir: `/tmp/pojntfx/os/grub/in`,
-            buildir: `/tmp/pojntfx/os/grub/build`,
-            packagedir: `/tmp/pojntfx/os/grub/${uuid}/package`
+            indir: `/tmp/pojntfx/provisioner/grub/in`,
+            buildir: `/tmp/pojntfx/provisioner/grub/build`,
+            packagedir: `/tmp/pojntfx/provisioner/grub/${uuid}/package`
           })
         );
       }

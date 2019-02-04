@@ -14,7 +14,7 @@ bogus-priv
 domain=DOMAIN
 expand-hosts
 no-hosts
-addn-hosts=/tmp/pojntfx/os/dns/hosts
+addn-hosts=/tmp/pojntfx/provisioner/dns/hosts
 local=/DOMAIN/
 domain-needed
 no-resolv
