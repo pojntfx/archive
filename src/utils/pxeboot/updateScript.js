@@ -49,17 +49,18 @@ dhcp-boot=tag:!ipxe,tag:BIOS,undionly.kpxe,10.1.0.1
 # EFI client
 dhcp-boot=tag:!ipxe,tag:!BIOS,ipxe.efi,10.1.0.1`;
 
-module.exports.set = async ({
+module.exports.updateScript = async ({
   interface,
   domain,
   tftpDir,
   scriptDir,
   script,
   iPXEBIOSPath,
-  iPXEUEFIPath
+  iPXEUEFIPath,
+  tempdir
 }) => {
   await setNetwork(interface);
   await copyiPXE(tftpDir, iPXEBIOSPath, iPXEUEFIPath);
   await writeScript(scriptDir, script);
-  return await setDNSMasq(interface, domain, tftpDir, CONFIGTMPL);
+  return await setDNSMasq(interface, domain, tftpDir, CONFIGTMPL, tempdir);
 };
