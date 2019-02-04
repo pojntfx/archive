@@ -2,7 +2,6 @@ const { setNetwork } = require("./setNetwork");
 const { copyiPXE } = require("./copyiPXE");
 const { writeScript } = require("./writeScript");
 const { setDNSMasq } = require("./setDNSMasq");
-const { init } = require("./init");
 
 const CONFIGTMPL = `# enable logs if required
 #log-queries

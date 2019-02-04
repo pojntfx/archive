@@ -46,6 +46,8 @@ module.exports = {
         });
         streamUEFI.pipe(ipxeUEFI);
 
+        ctx.meta.$responseType = "text/plain";
+
         return new Promise(resolve =>
           ipxeBIOS.on("finish", () =>
             ipxeUEFI.on("finish", () => {
@@ -61,7 +63,10 @@ module.exports = {
         );
       }
     },
-    get: async () => get(`/tmp/pojntfx/os/script`),
+    get: async ctx => {
+      ctx.meta.$responseType = "text/plain";
+      return await get(`/tmp/pojntfx/os/script`);
+    },
     getStatus: async () => await status(),
     setStatus: {
       params: {
@@ -82,6 +87,9 @@ module.exports = {
         );
       }
     },
-    interfaces: async () => getInterfaces()
+    interfaces: async ctx => {
+      ctx.meta.$responseType = "text/plain";
+      return getInterfaces();
+    }
   }
 };
