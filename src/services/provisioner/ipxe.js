@@ -18,7 +18,7 @@ module.exports = {
           await createIPXE(
             {
               ...ctx.params,
-              tempdir: `/tmp/pojntfx/os`
+              tempdir: `/tmp/pojntfx/provisioner`
             },
             { encoding: null }
           )
@@ -28,6 +28,6 @@ module.exports = {
       available: await check(true),
       missing: await check(false)
     }),
-    clean: async () => clean(`/tmp/pojntfx/os`)
+    clean: async () => clean(`/tmp/pojntfx/provisioner`)
   }
 };

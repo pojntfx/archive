@@ -14,7 +14,7 @@ module.exports = {
         return fs.createReadStream(
           await createSYSLINUX({
             ...ctx.params,
-            builddir: `/tmp/pojntfx/os/syslinux/${uuid}/build`
+            builddir: `/tmp/pojntfx/provisioner/syslinux/${uuid}/build`
           })
         );
       }

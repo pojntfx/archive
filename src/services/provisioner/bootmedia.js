@@ -17,7 +17,7 @@ module.exports = {
         const id = `${ctx.params.label.split(" ").join("-")}-${uuid1()}`;
         createISO({
           ...ctx.params,
-          packageDir: `/tmp/pojntfx/os/bootmedia/${id}/package`,
+          packageDir: `/tmp/pojntfx/provisioner/bootmedia/${id}/package`,
           id,
           ctx
         });
@@ -30,13 +30,13 @@ module.exports = {
       },
       handler: ctx =>
         shell
-          .ls("/tmp/pojntfx/os/bootmedia")
+          .ls("/tmp/pojntfx/provisioner/bootmedia")
           .filter(folder => folder === ctx.params.id).length > 0
           ? fs.existsSync(
-              `/tmp/pojntfx/os/bootmedia/${ctx.params.id}/package/out.iso`
+              `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}/package/out.iso`
             )
             ? fs.createReadStream(
-                `/tmp/pojntfx/os/bootmedia/${ctx.params.id}/package/out.iso`
+                `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}/package/out.iso`
               )
             : new MoleculerError(
                 "This boot medium could not be found",
@@ -50,9 +50,9 @@ module.exports = {
             )
     },
     list: () =>
-      shell.ls("-l", "/tmp/pojntfx/os/bootmedia").map(folder =>
+      shell.ls("-l", "/tmp/pojntfx/provisioner/bootmedia").map(folder =>
         fs.existsSync(
-          `/tmp/pojntfx/os/bootmedia/${folder.name}/package/out.iso`
+          `/tmp/pojntfx/provisioner/bootmedia/${folder.name}/package/out.iso`
         )
           ? {
               ...folder,
@@ -68,8 +68,8 @@ module.exports = {
     remove: {
       params: { id: "string" },
       handler: ctx => {
-        if (fs.existsSync(`/tmp/pojntfx/os/bootmedia/${ctx.params.id}`)) {
-          shell.rm("-rf", `/tmp/pojntfx/os/bootmedia/${ctx.params.id}`);
+        if (fs.existsSync(`/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}`)) {
+          shell.rm("-rf", `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}`);
           return ctx.params.id;
         } else {
           throw new MoleculerError(

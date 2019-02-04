@@ -20,10 +20,10 @@ module.exports.createISO = async ({
   ctx
 }) => {
   const paths = {
-    ipxe: `/tmp/pojntfx/os/bootmedia/${id}/ipxe`,
-    isolinux: `/tmp/pojntfx/os/bootmedia/${id}/isolinux`,
-    grub: `/tmp/pojntfx/os/bootmedia/${id}/grub`,
-    root: `/tmp/pojntfx/os/bootmedia/${id}`,
+    ipxe: `/tmp/pojntfx/provisioner/bootmedia/${id}/ipxe`,
+    isolinux: `/tmp/pojntfx/provisioner/bootmedia/${id}/isolinux`,
+    grub: `/tmp/pojntfx/provisioner/bootmedia/${id}/grub`,
+    root: `/tmp/pojntfx/provisioner/bootmedia/${id}`,
     package: packageDir
   };
 

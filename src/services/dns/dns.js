@@ -25,13 +25,13 @@ module.exports = {
         ctx.meta.$responseType = "text/plain";
         return await updateScript({
           ...ctx.params,
-          tempdir: `/tmp/pojntfx/os/dns`
+          tempdir: `/tmp/pojntfx/provisioner/dns`
         });
       }
     },
     getScript: async ctx => {
       ctx.meta.$responseType = "text/plain";
-      const script = await getScript(`/tmp/pojntfx/os/dns`);
+      const script = await getScript(`/tmp/pojntfx/provisioner/dns`);
       if (script !== false) {
         return script;
       } else {
@@ -50,13 +50,13 @@ module.exports = {
         ctx.meta.$responseType = "text/plain";
         return await updateHosts({
           ...ctx.params,
-          tempdir: `/tmp/pojntfx/os/dns`
+          tempdir: `/tmp/pojntfx/provisioner/dns`
         });
       }
     },
     getHosts: async ctx => {
       ctx.meta.$responseType = "text/plain";
-      const script = await getHosts(`/tmp/pojntfx/os/dns`);
+      const script = await getHosts(`/tmp/pojntfx/provisioner/dns`);
       if (script !== false) {
         return script;
       } else {
@@ -73,7 +73,7 @@ module.exports = {
       },
       handler: async ctx =>
         ctx.params.on
-          ? await start({ tempdir: "/tmp/pojntfx/os/dns", name: "dnsmasq-dns" })
+          ? await start({ tempdir: "/tmp/pojntfx/provisioner/dns", name: "dnsmasq-dns" })
           : await stop("dnsmasq-dns")
     },
     getStatus: async () => await getStatus("dnsmasq-dns"),
