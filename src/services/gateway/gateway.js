@@ -5,6 +5,34 @@ const Sequelize = require("sequelize");
 const localtunnel = require("localtunnel");
 const { MoleculerError } = require("moleculer").Errors;
 
+const routes = [
+  {
+    path: "/api/dns",
+    whitelist: [
+      "dns.updateScript",
+      "dns.getScript",
+      "dns.updateHosts",
+      "dns.getHosts",
+      "dns.updateStatus",
+      "dns.getStatus",
+      "dns.getLogs",
+      "dns.getInterfaces",
+      "dns.getPorts"
+    ],
+    aliases: {
+      "PUT script": "dns.updateScript",
+      "GET script": "dns.getScript",
+      "PUT hosts": "dns.updateHosts",
+      "GET hosts": "dns.getHosts",
+      "PUT status": "dns.updateStatus",
+      "GET status": "dns.getStatus",
+      "GET logs": "dns.getLogs",
+      "GET interfaces": "dns.getInterfaces",
+      "GET ports": "dns.getPorts"
+    }
+  }
+];
+
 module.exports = {
   name: "gateway",
   mixins: [Gateway, DbService],
@@ -29,75 +57,7 @@ module.exports = {
       credentials: false,
       maxAge: 3600
     },
-    routes: [
-      {
-        whitelist: [
-          "bootmedia.create",
-          "bootmedia.list",
-          "bootmedia.get",
-          "bootmedia.delete",
-          "dnsmasq.set",
-          "dnsmasq.get",
-          "dnsmasq.setStatus",
-          "dnsmasq.getStatus",
-          "dnsmasq.logs",
-          "dnsmasq.interfaces",
-          "ipxescripts.*",
-          "preseeds.*",
-          "postseeds.*",
-          "gateway.expose",
-          "gateway.getAll",
-          "gateway.delete",
-          "dns.updateScript",
-          "dns.getScript",
-          "dns.updateHosts",
-          "dns.getHosts",
-          "dns.updateStatus",
-          "dns.getStatus",
-          "dns.getLogs",
-          "dns.getInterfaces",
-          "dns.getPorts",
-          "dns.getLookup"
-        ],
-        aliases: {
-          // bootmedia
-          "POST bootmedia": "bootmedia.create",
-          "GET bootmedia": "bootmedia.list",
-          "GET bootmedia/:id": "bootmedia.get",
-          "DELETE bootmedia/:id": "bootmedia.delete",
-          // pxeboot
-          "PUT pxeboot": "dnsmasq.set",
-          "GET pxeboot": "dnsmasq.get",
-          "PUT pxeboot/status": "dnsmasq.setStatus",
-          "GET pxeboot/status": "dnsmasq.getStatus",
-          "GET pxeboot/logs": "dnsmasq.logs",
-          "GET pxeboot/interfaces": "dnsmasq.interfaces",
-          "REST pxeboot/mainscripts": "ipxescripts",
-          "REST pxeboot/preseeds": "preseeds",
-          "REST pxeboot/postseeds": "postseeds",
-          // tunnels
-          "POST tunnels": "gateway.expose",
-          "GET tunnels": "gateway.getAll",
-          "DELETE tunnels/:id": "gateway.delete",
-          // dns
-          "PUT dns/script": "dns.updateScript",
-          "GET dns/script": "dns.getScript",
-          "PUT dns/hosts": "dns.updateHosts",
-          "GET dns/hosts": "dns.getHosts",
-          "PUT dns/status": "dns.updateStatus",
-          "GET dns/status": "dns.getStatus",
-          "GET dns/logs": "dns.getLogs",
-          "GET dns/interfaces": "dns.getInterfaces",
-          "GET dns/ports": "dns.getPorts",
-          "GET dns/lookup": "dns.getLookup"
-          // Doesn't work?
-          // - Have you whitelisted the service above?
-          // - Have you added the service as a dependency?
-          // - Try restarting the container
-          // (keep this note here to prevent pain)
-        }
-      }
-    ]
+    routes
   },
   actions: {
     expose: {
