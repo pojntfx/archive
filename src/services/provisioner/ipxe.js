@@ -2,7 +2,6 @@ const { createIPXE } = require("../../utils/ipxe/createiPXE");
 const { check } = require("../../utils/ipxe/check");
 const { clean } = require("../../utils/ipxe/clean");
 const fs = require("fs");
-const shell = require("shelljs");
 
 module.exports = {
   name: "ipxe",
