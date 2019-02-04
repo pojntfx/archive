@@ -73,7 +73,10 @@ module.exports = {
       },
       handler: async ctx =>
         ctx.params.on
-          ? await start({ tempdir: "/tmp/pojntfx/provisioner/dns", name: "dnsmasq-dns" })
+          ? await start({
+              tempdir: "/tmp/pojntfx/provisioner/dns",
+              name: "dnsmasq-dns"
+            })
           : await stop("dnsmasq-dns")
     },
     getStatus: async () => await getStatus("dnsmasq-dns"),
@@ -101,10 +104,7 @@ module.exports = {
     getLookup: {
       params: {
         domain: "string",
-        dnsServer: {
-          required: false,
-          type: "string"
-        }
+        dnsServer: "string"
       },
       handler: async ctx => {
         ctx.meta.$responseType = "text/plain";
