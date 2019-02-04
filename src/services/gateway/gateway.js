@@ -50,6 +50,8 @@ module.exports = {
           "gateway.delete",
           "dns.updateScript",
           "dns.getScript",
+          "dns.updateHosts",
+          "dns.getHosts",
           "dns.getPorts"
         ],
         aliases: {
@@ -73,9 +75,12 @@ module.exports = {
           "DELETE tunnels/:id": "gateway.delete",
           "PUT dns/script": "dns.updateScript",
           "GET dns/script": "dns.getScript",
+          "PUT dns/hosts": "dns.updateHosts",
+          "GET dns/hosts": "dns.getHosts",
           "GET dns/ports": "dns.getPorts"
           // Doesn't work?
           // - Have you whitelisted the service above?
+          // - Have you added the service as a dependency?
           // - Try restarting the container
           // (keep this note here to prevent pain)
         }

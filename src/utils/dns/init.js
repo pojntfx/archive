@@ -1,7 +1,7 @@
 const shell = require("shelljs");
 
-module.exports.init = async tempdir => {
+module.exports.init = async ({ tempdir, script, hosts }) => {
   shell.mkdir("-p", tempdir);
-  shell.exec(`echo "" > ${tempdir}/dnsmasq.conf`);
-  return shell.exec(`echo "" > ${tempdir}/hosts`);
+  script && shell.exec(`echo "" > ${tempdir}/dnsmasq.conf`);
+  hosts && shell.exec(`echo "" > ${tempdir}/hosts`);
 };
