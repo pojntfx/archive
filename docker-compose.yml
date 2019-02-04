@@ -3,9 +3,9 @@ version: "3"
 services:
   provisioner:
     environment:
-      - IPXESCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
-      - PRESEEDS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
-      - PRESEEDSCRIPTS_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
+      - MAINSCRIPTS_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
+      - PRESEEDS_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
+      - PRESEEDSCRIPTS_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
       - SERVICEDIR=src/services/provisioner
       - SERVICES=*.js
     build: .
@@ -16,18 +16,18 @@ services:
     command: npm run start--watch
     networks:
       - main
-      - ipxescripts
+      - mainscripts
     depends_on:
-      - ipxescripts_db
-  dnsmasq:
+      - mainscripts_db
+  pxeboot:
     environment:
-      - SERVICEDIR=src/services/dnsmasq
+      - SERVICEDIR=src/services/pxeboot
       - SERVICES=*.js
     build: .
     volumes:
-      - dnsmasq_node_modules:/opt/pojntfx/os/node_modules:z
-      - dnsmasq_tmp:/tmp/pojntfx/os:z
-      - dnsmasq_etc:/etc:z
+      - pxeboot_node_modules:/opt/pojntfx/os/node_modules:z
+      - pxeboot_tmp:/tmp/pojntfx/os:z
+      - pxeboot_etc:/etc:z
     command: npm run start--watch
     network_mode: host
     cap_add:
@@ -52,7 +52,7 @@ services:
       - "53:53"
   gateway:
     environment:
-      - GATEWAY_DB_URI=mysql://ipxescripts_db_user:ipxescripts_db_password@ipxescripts_db:3306/ipxescripts
+      - GATEWAY_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
       - SERVICEDIR=src/services/gateway
       - SERVICES=*.js
     build: .
@@ -61,36 +61,36 @@ services:
     command: npm run start--watch
     networks:
       - main
-      - ipxescripts
+      - mainscripts
     ports:
       - 3000:3000
     depends_on:
-      - dnsmasq
+      - pxeboot
       - provisioner
-      - ipxescripts_db
-  ipxescripts_db:
+      - mainscripts_db
+  mainscripts_db:
     environment:
-      - MARIADB_ROOT_PASSWORD=ipxescripts_db_root_password
-      - MARIADB_USER=ipxescripts_db_user
-      - MARIADB_PASSWORD=ipxescripts_db_password
-      - MARIADB_DATABASE=ipxescripts
+      - MARIADB_ROOT_PASSWORD=mainscripts_db_root_password
+      - MARIADB_USER=mainscripts_db_user
+      - MARIADB_PASSWORD=mainscripts_db_password
+      - MARIADB_DATABASE=mainscripts
     image: bitnami/mariadb:10.2.21
     volumes:
-      - ipxescripts_db:/bitnami/mariadb
+      - mainscripts_db:/bitnami/mariadb
     networks:
-      - ipxescripts
+      - mainscripts
 
 volumes:
   provisioner_node_modules:
   provisioner_tmp:
-  dnsmasq_node_modules:
-  dnsmasq_tmp:
-  dnsmasq_etc:
+  pxeboot_node_modules:
+  pxeboot_tmp:
+  pxeboot_etc:
   dns_node_modules:
   dns_tmp:
   gateway_node_modules:
-  ipxescripts_db:
+  mainscripts_db:
 
 networks:
   main:
-  ipxescripts:
+  mainscripts:

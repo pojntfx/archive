@@ -7,8 +7,9 @@ const { MoleculerError } = require("moleculer").Errors;
 
 const routes = [
   {
-    path: "/api/dns",
+    path: "/api",
     whitelist: [
+      // dns
       "dns.updateScript",
       "dns.getScript",
       "dns.updateHosts",
@@ -17,18 +18,61 @@ const routes = [
       "dns.getStatus",
       "dns.getLogs",
       "dns.getInterfaces",
-      "dns.getPorts"
+      "dns.getPorts",
+      "dns.getLookup",
+      // tunnels
+      "gateway.createTunnel",
+      "gateway.listTunnels",
+      "gateway.removeTunnel",
+      // bootmedia
+      "bootmedia.create",
+      "bootmedia.list",
+      "bootmedia.get",
+      "bootmedia.remove",
+      // pxeboot
+      "pxeboot.updateScript",
+      "pxeboot.getScript",
+      "mainscripts.*",
+      "preseeds.*",
+      "postseeds.*",
+      "pxeboot.updateStatus",
+      "pxeboot.getStatus",
+      "pxeboot.getLogs",
+      "pxeboot.getInterfaces",
+      "pxeboot.getPorts"
     ],
     aliases: {
-      "PUT script": "dns.updateScript",
-      "GET script": "dns.getScript",
-      "PUT hosts": "dns.updateHosts",
-      "GET hosts": "dns.getHosts",
-      "PUT status": "dns.updateStatus",
-      "GET status": "dns.getStatus",
-      "GET logs": "dns.getLogs",
-      "GET interfaces": "dns.getInterfaces",
-      "GET ports": "dns.getPorts"
+      // dns
+      "PUT dns/script": "dns.updateScript",
+      "GET dns/script": "dns.getScript",
+      "PUT dns/hosts": "dns.updateHosts",
+      "GET dns/hosts": "dns.getHosts",
+      "PUT dns/status": "dns.updateStatus",
+      "GET dns/status": "dns.getStatus",
+      "GET dns/logs": "dns.getLogs",
+      "GET dns/interfaces": "dns.getInterfaces",
+      "GET dns/ports": "dns.getPorts",
+      "GET dns/lookup": "dns.getLookup",
+      // tunnels
+      "POST tunnels": "gateway.createTunnel",
+      "GET tunnels": "gateway.listTunnels",
+      "DELETE tunnels/:id": "gateway.removeTunnel",
+      // bootmedia
+      "POST bootmedia": "bootmedia.create",
+      "GET bootmedia": "bootmedia.list",
+      "GET bootmedium/:id": "bootmedia.get",
+      "DELETE bootmedium/:id": "bootmedia.remove",
+      // pxeboot
+      "PUT pxeboot/script": "pxeboot.updateScript",
+      "GET pxeboot/script": "pxeboot.getScript",
+      "REST pxeboot/mainscripts": "mainscripts",
+      "REST pxeboot/preseeds": "preseeds",
+      "REST pxeboot/postseeds": "postseeds",
+      "PUT pxeboot/status": "pxeboot.updateStatus",
+      "GET pxeboot/status": "pxeboot.getStatus",
+      "GET pxeboot/logs": "pxeboot.getLogs",
+      "GET pxeboot/interfaces": "pxeboot.getInterfaces",
+      "GET pxeboot/ports": "pxeboot.getPorts"
     }
   }
 ];
@@ -60,7 +104,7 @@ module.exports = {
     routes
   },
   actions: {
-    expose: {
+    createTunnel: {
       params: {
         subdomain: "string"
       },
@@ -108,14 +152,14 @@ module.exports = {
         }
       }
     },
-    getAll: async ctx => {
+    listTunnels: async ctx => {
       const tunnels = await ctx.call("gateway.list");
       const tunnelsThatDontExistAnymore = [];
 
       for (tunnel of tunnels.rows) {
         if (
           !(await ctx.call(
-            "gateway.tunnelExists",
+            "gateway.tryToFindTunnel",
             {
               domain: tunnel.domain
             },
@@ -136,7 +180,7 @@ module.exports = {
 
       return await ctx.call("gateway.list");
     },
-    delete: {
+    removeTunnel: {
       params: {
         id: "string"
       },
@@ -147,7 +191,7 @@ module.exports = {
           });
 
           await ctx.call(
-            "gateway.unexpose",
+            "gateway.closeTunnel",
             {
               domain: tunnelInDb.domain,
               nodeId: tunnelInDb.nodeId
@@ -166,7 +210,7 @@ module.exports = {
         }
       }
     },
-    unexpose: {
+    closeTunnel: {
       params: {
         domain: "string"
       },
@@ -175,7 +219,7 @@ module.exports = {
         return await tunnel.close();
       }
     },
-    tunnelExists: {
+    tryToFindTunnel: {
       params: {
         domain: "string"
       },

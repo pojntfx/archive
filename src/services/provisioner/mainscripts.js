@@ -3,9 +3,9 @@ const SqlAdapter = require("moleculer-db-adapter-sequelize");
 const Sequelize = require("sequelize");
 
 module.exports = {
-  name: "ipxescripts",
+  name: "mainscripts",
   mixins: [DbService],
-  adapter: new SqlAdapter(process.env.IPXESCRIPTS_DB_URI),
+  adapter: new SqlAdapter(process.env.MAINSCRIPTS_DB_URI),
   model: {
     name: "ipxescript",
     define: {

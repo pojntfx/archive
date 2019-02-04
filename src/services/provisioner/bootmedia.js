@@ -65,7 +65,7 @@ module.exports = {
               containsBootMedium: false
             }
       ),
-    delete: {
+    remove: {
       params: { id: "string" },
       handler: ctx => {
         if (fs.existsSync(`/tmp/pojntfx/os/bootmedia/${ctx.params.id}`)) {
