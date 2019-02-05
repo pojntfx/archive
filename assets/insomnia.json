@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2019-02-04T21:07:09.382Z",
+	"__export_date": "2019-02-05T20:32:56.231Z",
 	"__export_source": "insomnia.desktop.app:v6.3.2",
 	"resources": [
 		{
@@ -415,8 +415,8 @@
 			"description": "",
 			"environment": {},
 			"metaSortKey": -1549313823151,
-			"modified": 1549313823151,
-			"name": "script",
+			"modified": 1549397808240,
+			"name": "mainscript",
 			"parentId": "fld_1eaa59f1880f47ba934a4752201fafd8",
 			"_type": "request_group"
 		},
@@ -426,8 +426,8 @@
 			"description": "",
 			"environment": {},
 			"metaSortKey": -1549313307403.125,
-			"modified": 1549313863498,
-			"name": "mainscripts",
+			"modified": 1549397843443,
+			"name": "subscripts",
 			"parentId": "fld_1eaa59f1880f47ba934a4752201fafd8",
 			"_type": "request_group"
 		},
@@ -437,8 +437,8 @@
 			"description": "",
 			"environment": {},
 			"metaSortKey": -1549313049529.1875,
-			"modified": 1549313881821,
-			"name": "preseeds",
+			"modified": 1549397874831,
+			"name": "kickstarts",
 			"parentId": "fld_1eaa59f1880f47ba934a4752201fafd8",
 			"_type": "request_group"
 		},
@@ -448,8 +448,8 @@
 			"description": "",
 			"environment": {},
 			"metaSortKey": -1549312915259.0151,
-			"modified": 1549313904626,
-			"name": "postseeds",
+			"modified": 1549397906568,
+			"name": "preinstallscripts",
 			"parentId": "fld_1eaa59f1880f47ba934a4752201fafd8",
 			"_type": "request_group"
 		},
@@ -461,6 +461,17 @@
 			"metaSortKey": -1549312822755.0154,
 			"modified": 1549313929450,
 			"name": "status",
+			"parentId": "fld_1eaa59f1880f47ba934a4752201fafd8",
+			"_type": "request_group"
+		},
+		{
+			"_id": "fld_0929db184e184a08ac677cf9c0e3663d",
+			"created": 1549397928141,
+			"description": "",
+			"environment": {},
+			"metaSortKey": -1549312869007.0151,
+			"modified": 1549397938287,
+			"name": "postinstallscripts",
 			"parentId": "fld_1eaa59f1880f47ba934a4752201fafd8",
 			"_type": "request_group"
 		},
@@ -616,7 +627,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"hosts\": \"192.168.178.105  provisioner.felicitas.hirschkopfweg\"\n}"
+				"text": "{\n\t\"hosts\": \"152.19.134.198  test.felicitas.hirschkopfweg\"\n}"
 			},
 			"created": 1549310776351,
 			"description": "",
@@ -630,7 +641,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1549310347910,
 			"method": "PUT",
-			"modified": 1549313769628,
+			"modified": 1549317120449,
 			"name": "hosts",
 			"parameters": [],
 			"parentId": "fld_9992f8b7eef14e31ae83ffe87c9f3ec0",
@@ -703,7 +714,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"interface\": \"enp0s25\",\n\t\"domain\": \"provisioner.felicitas.hirschkopfweg\",\n\t\"script\": \"#!ipxe\\nautoboot\"\n}"
+				"text": "{\n\t\"interface\": \"enp0s25\",\n\t\"domain\": \"provisioner.felicitas.hirschkopfweg\",\n\t\"script\": \"#!ipxe\\n\\nmenu Choose Script\\nitem mainsubscriptserver_fedora29 Main Sub Script Server Fedora 29\\nchoose --default mainsubscriptserver_fedora29 --timeout 3000 server && goto ${server}\\n\\n:mainsubscriptserver_fedora29\\ndhcp\\nchain {{ gateway  }}/pxeboot/subscripts/{% prompt 'Subscript ID', '', '', '', false %}\"\n}"
 			},
 			"created": 1549312783327,
 			"description": "",
@@ -717,8 +728,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312916729,
 			"method": "PUT",
-			"modified": 1549313832444,
-			"name": "script",
+			"modified": 1549398319061,
+			"name": "mainscript",
 			"parameters": [],
 			"parentId": "fld_6f43926dfca3489180fce4fb986fdd02",
 			"settingDisableRenderRequestBody": false,
@@ -727,7 +738,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/script",
+			"url": "{{ gateway  }}/pxeboot/mainscript",
 			"_type": "request"
 		},
 		{
@@ -740,8 +751,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312916679,
 			"method": "GET",
-			"modified": 1549314070660,
-			"name": "script",
+			"modified": 1549398174893,
+			"name": "mainscript",
 			"parameters": [],
 			"parentId": "fld_6f43926dfca3489180fce4fb986fdd02",
 			"settingDisableRenderRequestBody": false,
@@ -750,7 +761,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/script",
+			"url": "{{ gateway  }}/pxeboot/mainscript",
 			"_type": "request"
 		},
 		{
@@ -758,7 +769,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"title\": \"Script 1\",\n\t\"text\": \"#!ipxe\\nautoboot\"\n}"
+				"text": "{\n\t\"title\": \"Sub Script 1\",\n\t\"text\": \"#!ipxe\\n\\nmenu Choose Script\\nitem subscript Fedora 29\\nchoose --default subscript --timeout 3000 subscript && goto ${subscript}\\n\\n:subscript\\ndhcp\\nset base http://dl.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/os\\nkernel ${base}/images/pxeboot/vmlinuz initrd=initrd.img repo=${base}\\ninitrd ${base}/images/pxeboot/initrd.img\\nboot\"\n}"
 			},
 			"created": 1549312916579,
 			"description": "",
@@ -772,8 +783,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549313834945.5,
 			"method": "POST",
-			"modified": 1549313845746,
-			"name": "mainscripts",
+			"modified": 1549398218373,
+			"name": "subscripts",
 			"parameters": [],
 			"parentId": "fld_f6337b96128f4b94aa89775cf2a1e8fc",
 			"settingDisableRenderRequestBody": false,
@@ -782,7 +793,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/mainscripts",
+			"url": "{{ gateway  }}/pxeboot/subscripts",
 			"_type": "request"
 		},
 		{
@@ -795,8 +806,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549313834895.5,
 			"method": "GET",
-			"modified": 1549313848859,
-			"name": "mainscripts",
+			"modified": 1549398044617,
+			"name": "subscripts",
 			"parameters": [],
 			"parentId": "fld_f6337b96128f4b94aa89775cf2a1e8fc",
 			"settingDisableRenderRequestBody": false,
@@ -805,7 +816,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/mainscripts",
+			"url": "{{ gateway  }}/pxeboot/subscripts",
 			"_type": "request"
 		},
 		{
@@ -818,8 +829,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549313834845.5,
 			"method": "GET",
-			"modified": 1549314089060,
-			"name": "mainscript",
+			"modified": 1549398047186,
+			"name": "subscript",
 			"parameters": [],
 			"parentId": "fld_f6337b96128f4b94aa89775cf2a1e8fc",
 			"settingDisableRenderRequestBody": false,
@@ -828,7 +839,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/mainscripts/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/subscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -841,8 +852,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549313834745.5,
 			"method": "DELETE",
-			"modified": 1549313858932,
-			"name": "mainscript",
+			"modified": 1549398051343,
+			"name": "subscript",
 			"parameters": [],
 			"parentId": "fld_f6337b96128f4b94aa89775cf2a1e8fc",
 			"settingDisableRenderRequestBody": false,
@@ -851,7 +862,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/mainscripts/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/subscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -859,7 +870,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"title\": \"Script 1\",\n\t\"text\": \"#!ipxe\\nautoboot\"\n}"
+				"text": "{\n\t\"title\": \"Script 1\",\n\t\"text\": \"#!ipxe\\n\\nmenu Choose Sub Script\\nitem fedora29_default Fedora 29 Default\\nchoose --default fedora29_default --timeout 3000 fedora29_default && goto ${fedora29_default}\\n\\n:fedora29_default\\ndhcp\\nset base http://dl.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/os\\nkernel ${base}/images/pxeboot/vmlinuz initrd=initrd.img repo=${base}\\ninitrd ${base}/images/pxeboot/initrd.img\\nboot\"\n}"
 			},
 			"created": 1549313270352,
 			"description": "",
@@ -873,8 +884,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549313834795.5,
 			"method": "PUT",
-			"modified": 1549313857064,
-			"name": "mainscript",
+			"modified": 1549398049150,
+			"name": "subscript",
 			"parameters": [],
 			"parentId": "fld_f6337b96128f4b94aa89775cf2a1e8fc",
 			"settingDisableRenderRequestBody": false,
@@ -883,7 +894,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/mainscripts/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/subscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -891,7 +902,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"title\": \"Preseed 1\",\n\t\"text\": \"tbd\"\n}"
+				"text": "{\n\t\"title\": \"Kickstart 1\",\n\t\"text\": \"tbd\"\n}"
 			},
 			"created": 1549313119885,
 			"description": "",
@@ -905,8 +916,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312791655.25,
 			"method": "POST",
-			"modified": 1549313884001,
-			"name": "preseeds",
+			"modified": 1549398734296,
+			"name": "kickstarts",
 			"parameters": [],
 			"parentId": "fld_ad146faf5c1f4cb98c21a2e8df1523bc",
 			"settingDisableRenderRequestBody": false,
@@ -915,7 +926,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/preseeds",
+			"url": "{{ gateway  }}/pxeboot/kickstarts",
 			"_type": "request"
 		},
 		{
@@ -928,8 +939,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312791605.25,
 			"method": "GET",
-			"modified": 1549313886712,
-			"name": "preseeds",
+			"modified": 1549398036350,
+			"name": "kickstarts",
 			"parameters": [],
 			"parentId": "fld_ad146faf5c1f4cb98c21a2e8df1523bc",
 			"settingDisableRenderRequestBody": false,
@@ -938,7 +949,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/preseeds",
+			"url": "{{ gateway  }}/pxeboot/kickstarts",
 			"_type": "request"
 		},
 		{
@@ -951,8 +962,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312791555.25,
 			"method": "GET",
-			"modified": 1549313888211,
-			"name": "preseed",
+			"modified": 1549398027222,
+			"name": "kickstart",
 			"parameters": [],
 			"parentId": "fld_ad146faf5c1f4cb98c21a2e8df1523bc",
 			"settingDisableRenderRequestBody": false,
@@ -961,7 +972,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/preseeds/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/kickstarts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -974,8 +985,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312791455.25,
 			"method": "DELETE",
-			"modified": 1549313891357,
-			"name": "preseed",
+			"modified": 1549398031396,
+			"name": "kickstart",
 			"parameters": [],
 			"parentId": "fld_ad146faf5c1f4cb98c21a2e8df1523bc",
 			"settingDisableRenderRequestBody": false,
@@ -984,7 +995,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/preseeds/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/kickstarts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -1006,8 +1017,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312791505.25,
 			"method": "PUT",
-			"modified": 1549313889789,
-			"name": "preseed",
+			"modified": 1549398029411,
+			"name": "kickstart",
 			"parameters": [],
 			"parentId": "fld_ad146faf5c1f4cb98c21a2e8df1523bc",
 			"settingDisableRenderRequestBody": false,
@@ -1016,7 +1027,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/preseeds/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/kickstarts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -1024,7 +1035,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"title\": \"Postseed 1\",\n\t\"text\": \"tbd\"\n}"
+				"text": "{\n\t\"title\": \"Pre Install Script 1\",\n\t\"text\": \"tbd\"\n}"
 			},
 			"created": 1549313363466,
 			"description": "",
@@ -1038,8 +1049,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312780988.8428,
 			"method": "POST",
-			"modified": 1549313906506,
-			"name": "postseeds",
+			"modified": 1549398006319,
+			"name": "preinstallscripts",
 			"parameters": [],
 			"parentId": "fld_43dd82adac8848308ecffc7ac37462bf",
 			"settingDisableRenderRequestBody": false,
@@ -1048,7 +1059,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/postseeds",
+			"url": "{{ gateway  }}/pxeboot/preinstallscripts",
 			"_type": "request"
 		},
 		{
@@ -1061,8 +1072,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312780938.8428,
 			"method": "GET",
-			"modified": 1549313908608,
-			"name": "postseeds",
+			"modified": 1549398009577,
+			"name": "preinstallscripts",
 			"parameters": [],
 			"parentId": "fld_43dd82adac8848308ecffc7ac37462bf",
 			"settingDisableRenderRequestBody": false,
@@ -1071,7 +1082,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/postseeds",
+			"url": "{{ gateway  }}/pxeboot/preinstallscripts",
 			"_type": "request"
 		},
 		{
@@ -1084,8 +1095,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312780888.8428,
 			"method": "GET",
-			"modified": 1549313911993,
-			"name": "postseed",
+			"modified": 1549398013372,
+			"name": "preinstallscript",
 			"parameters": [],
 			"parentId": "fld_43dd82adac8848308ecffc7ac37462bf",
 			"settingDisableRenderRequestBody": false,
@@ -1094,7 +1105,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/postseeds/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/preinstallscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -1116,8 +1127,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312780838.8428,
 			"method": "PUT",
-			"modified": 1549313913705,
-			"name": "postseed",
+			"modified": 1549398017824,
+			"name": "preinstallscript",
 			"parameters": [],
 			"parentId": "fld_43dd82adac8848308ecffc7ac37462bf",
 			"settingDisableRenderRequestBody": false,
@@ -1126,7 +1137,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/postseeds/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/preinstallscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -1139,8 +1150,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1549312780788.8428,
 			"method": "DELETE",
-			"modified": 1549313915497,
-			"name": "postseed",
+			"modified": 1549398019873,
+			"name": "preinstallscript",
 			"parameters": [],
 			"parentId": "fld_43dd82adac8848308ecffc7ac37462bf",
 			"settingDisableRenderRequestBody": false,
@@ -1149,7 +1160,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/pxeboot/postseeds/{% prompt 'ID', '', '', '', false %}",
+			"url": "{{ gateway  }}/pxeboot/preinstallscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		},
 		{
@@ -1205,6 +1216,139 @@
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
 			"url": "{{ gateway  }}/pxeboot/status",
+			"_type": "request"
+		},
+		{
+			"_id": "req_322677ea66ad4f54b63287e90ad776f8",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"title\": \"Post Install Script 1\",\n\t\"text\": \"tbd\"\n}"
+			},
+			"created": 1549397928165,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_8bdb71a4780a4acf98c500942ecbb01f",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1549312780988.8428,
+			"method": "POST",
+			"modified": 1549397982442,
+			"name": "postinstallscripts",
+			"parameters": [],
+			"parentId": "fld_0929db184e184a08ac677cf9c0e3663d",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ gateway  }}/pxeboot/postinstallscripts",
+			"_type": "request"
+		},
+		{
+			"_id": "req_b2ea9f65b0cf4c889f2504e2e7e37092",
+			"authentication": {},
+			"body": {},
+			"created": 1549397928169,
+			"description": "",
+			"headers": [],
+			"isPrivate": false,
+			"metaSortKey": -1549312780938.8428,
+			"method": "GET",
+			"modified": 1549397968385,
+			"name": "postinstallscripts",
+			"parameters": [],
+			"parentId": "fld_0929db184e184a08ac677cf9c0e3663d",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ gateway  }}/pxeboot/postinstallscripts",
+			"_type": "request"
+		},
+		{
+			"_id": "req_15380ce9897640a08315df318e47dc88",
+			"authentication": {},
+			"body": {},
+			"created": 1549397928170,
+			"description": "",
+			"headers": [],
+			"isPrivate": false,
+			"metaSortKey": -1549312780888.8428,
+			"method": "GET",
+			"modified": 1549397965980,
+			"name": "postinstallscript",
+			"parameters": [],
+			"parentId": "fld_0929db184e184a08ac677cf9c0e3663d",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ gateway  }}/pxeboot/postinstallscripts/{% prompt 'ID', '', '', '', false %}",
+			"_type": "request"
+		},
+		{
+			"_id": "req_d776b6abda114e02ae59aafaf0c682f7",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"title\": \"Postseed 1\",\n\t\"text\": \"tbd\"\n}"
+			},
+			"created": 1549397928172,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_082e1029c77e47c08d39097640344a86",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1549312780838.8428,
+			"method": "PUT",
+			"modified": 1549397963367,
+			"name": "postinstallscript",
+			"parameters": [],
+			"parentId": "fld_0929db184e184a08ac677cf9c0e3663d",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ gateway  }}/pxeboot/postinstallscripts/{% prompt 'ID', '', '', '', false %}",
+			"_type": "request"
+		},
+		{
+			"_id": "req_c102fa15068e480c9a88f37eff3574ac",
+			"authentication": {},
+			"body": {},
+			"created": 1549397928173,
+			"description": "",
+			"headers": [],
+			"isPrivate": false,
+			"metaSortKey": -1549312780788.8428,
+			"method": "DELETE",
+			"modified": 1549397960639,
+			"name": "postinstallscript",
+			"parameters": [],
+			"parentId": "fld_0929db184e184a08ac677cf9c0e3663d",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ gateway  }}/pxeboot/postinstallscripts/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		}
 	]

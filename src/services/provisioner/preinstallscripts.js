@@ -3,11 +3,11 @@ const SqlAdapter = require("moleculer-db-adapter-sequelize");
 const Sequelize = require("sequelize");
 
 module.exports = {
-  name: "postseeds",
+  name: "preinstallscripts",
   mixins: [DbService],
-  adapter: new SqlAdapter(process.env.PRESEEDSCRIPTS_DB_URI),
+  adapter: new SqlAdapter(process.env.PREINSTALLSCRIPTS_DB_URI),
   model: {
-    name: "postseed",
+    name: "preinstallscript",
     define: {
       title: Sequelize.STRING,
       text: Sequelize.TEXT
