@@ -15,10 +15,11 @@ Hosts as a service.
   - [ISO generator](./src/services/provisioner/iso.js)
 - [PXE boot](./src/services/pxeboot/pxeboot.js)
   - [TFTP server and DHCP boot](./src/services/pxeboot/pxeboot.js) (with DNSMasq)
-  - [Embedded script](./src/services/pxeboot/pxeboot.js)
-  - [Main scripts](./src/services/provisioner/mainscripts.js)
-  - [Preseed scripts](./src/services/provisioner/preseeds.js)
-  - [Postseed script](./src/services/provisioner/postseeds.js)
+  - [Main script](./src/services/pxeboot/pxeboot.js)
+  - [Sub scripts](./src/services/provisioner/subscripts.js)
+  - [Kickstarts](./src/services/provisioner/kickstarts.js)
+  - [Pre install scripts](./src/services/provisioner/preinstallscripts.js)
+  - [Post install scripts](./src/services/provisioner/postinstallscripts.js)
 
 All the following features have been implemented as independent and horizontally scalable microservices. They are exposed using a REST API gateway.
 
@@ -29,7 +30,7 @@ All the following features have been implemented as independent and horizontally
 npm run dev
 ```
 
-Now, you can either use the REST api directly on [localhost:3000/api](http://localhost:3000/api) or import the [Insomnia Export](./assets/SDFW-Provisioner_2019-02-04.json) into [Insomnia](https://insomnia.rest/).
+Now, you can either use the REST api directly on [localhost:3000/api](http://localhost:3000/api) or import the [Insomnia Export](./assets/insomnia.json) into [Insomnia](https://insomnia.rest/).
 
 ## Debugging
 
@@ -38,19 +39,19 @@ Now, you can either use the REST api directly on [localhost:3000/api](http://loc
 - Booting can take some time. The following scripts for example take roughly 8 minutes to boot; this is because the entire install media is being downloaded:
   ```bash
   #!ipxe
-  menu Choose Main Script
-  item mainmainscriptserver_fedora29 http://192.168.178.105:3000/api/pxeboot/mainscripts/1
-  choose --default mainmainscriptserver_fedora29 --timeout 3000 mainscript && goto ${mainscript}
-  :mainmainscriptserver_fedora29
+  menu Choose Script
+  item mainsubscriptserver_fedora29 Main Sub Script Server Fedora 29
+  choose --default mainsubscriptserver_fedora29 --timeout 3000 server &&  goto ${server}
+  :mainsubscriptserver_fedora29
   dhcp
-  chain http://192.168.178.105:3000/api/pxeboot/mainscripts/1
+  chain http://192.168.178.105:3000/api/pxeboot/subscripts/2
   ```
   ```bash
   #!ipxe
-  menu Choose Sub Script
-  item fedora29_default Fedora 29
-  choose --default fedora29_default --timeout 3000 subscript && goto ${subscript}
-  :fedora29_default
+  menu Choose Script
+  item subscript Fedora 29
+  choose --default subscript --timeout 3000 subscript && goto ${subscript}
+  :subscript
   dhcp
   set base http://dl.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/os
   kernel ${base}/images/pxeboot/vmlinuz initrd=initrd.img repo=${base}

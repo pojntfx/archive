@@ -3,9 +3,10 @@ version: "3"
 services:
   provisioner:
     environment:
-      - MAINSCRIPTS_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
-      - PRESEEDS_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
-      - PRESEEDSCRIPTS_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
+      - SUBSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - KICKSTARTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - PREINSTALLSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - POSTINSTALLSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
       - SERVICEDIR=src/services/provisioner
       - SERVICES=*.js
     build: .
@@ -18,7 +19,7 @@ services:
       - main
       - mainscripts
     depends_on:
-      - mainscripts_db
+      - scripts_db
   pxeboot:
     environment:
       - SERVICEDIR=src/services/pxeboot
@@ -52,7 +53,7 @@ services:
       - "53:53"
   gateway:
     environment:
-      - GATEWAY_DB_URI=mysql://mainscripts_db_user:mainscripts_db_password@mainscripts_db:3306/mainscripts
+      - GATEWAY_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
       - SERVICEDIR=src/services/gateway
       - SERVICES=*.js
     build: .
@@ -67,16 +68,16 @@ services:
     depends_on:
       - pxeboot
       - provisioner
-      - mainscripts_db
-  mainscripts_db:
+      - scripts_db
+  scripts_db:
     environment:
-      - MARIADB_ROOT_PASSWORD=mainscripts_db_root_password
-      - MARIADB_USER=mainscripts_db_user
-      - MARIADB_PASSWORD=mainscripts_db_password
+      - MARIADB_ROOT_PASSWORD=scripts_db_root_password
+      - MARIADB_USER=scripts_db_user
+      - MARIADB_PASSWORD=scripts_db_password
       - MARIADB_DATABASE=mainscripts
     image: bitnami/mariadb:10.2.21
     volumes:
-      - mainscripts_db:/bitnami/mariadb
+      - scripts_db:/bitnami/mariadb
     networks:
       - mainscripts
 
@@ -89,7 +90,7 @@ volumes:
   dns_node_modules:
   dns_tmp:
   gateway_node_modules:
-  mainscripts_db:
+  scripts_db:
 
 networks:
   main:
