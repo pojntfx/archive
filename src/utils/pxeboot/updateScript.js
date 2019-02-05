@@ -8,7 +8,7 @@ const CONFIGTMPL = `# enable logs if required
 #log-dhcp
 
 # disable DNS server
-port=0
+# port=0
 
 # listen on PXEBOOT vlan (vlan110) only
 listen-address=10.0.0.1

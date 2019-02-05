@@ -35,6 +35,29 @@ Now, you can either use the REST api directly on [localhost:3000/api](http://loc
 
 - If you're trying to start the DNS or PXE boot services, but you get an error like `dnsmasq: failed to bind DHCP server socket: Address already in use`, that means that your host is likely running `dnsmasq` itself. Try and run `pkill -9 dnsmasq` as `root` on the host to kill the process.
 - If you send a script using URL parameters instead of a JSON body, don't escape `${...}` as `\${...}` manually or you will end up with very cryptic error messages and/or an instant reboot if you try to chain iPXE/the script with iPXE/GRUB/SYSLINUX!
+- Booting can take some time. The following scripts for example take roughly 8 minutes to boot; this is because the entire install media is being downloaded:
+  ```bash
+  #!ipxe
+  menu Choose Main Script
+  item mainmainscriptserver_fedora29 http://192.168.178.105:3000/api/pxeboot/mainscripts/1
+  choose --default mainmainscriptserver_fedora29 --timeout 3000 mainscript && goto ${mainscript}
+  :mainmainscriptserver_fedora29
+  dhcp
+  chain http://192.168.178.105:3000/api/pxeboot/mainscripts/1
+  ```
+  ```bash
+  #!ipxe
+  menu Choose Sub Script
+  item fedora29_default Fedora 29
+  choose --default fedora29_default --timeout 3000 subscript && goto ${subscript}
+  :fedora29_default
+  dhcp
+  set base http://dl.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/os
+  kernel ${base}/images/pxeboot/vmlinuz initrd=initrd.img repo=${base}
+  initrd ${base}/images/pxeboot/initrd.img
+  boot
+  ```
+  While it downloads the `initrd.img` and `vmlinuz` files quite quickly, downloading the `installer.img` and so on images after network configuration can take some time, and progress will not be shown. Just be patient!
 
 ## Docs
 
