@@ -14,6 +14,7 @@
   "dependencies": {
     "localtunnel": "^1.9.1",
     "moleculer": "^0.13.5",
+    "moleculer-bull": "^0.2.3",
     "moleculer-db": "^0.7.7",
     "moleculer-db-adapter-sequelize": "^0.1.11",
     "moleculer-web": "^0.8.5",
