@@ -42,8 +42,9 @@ const routes = [
       "pxeboot.getInterfaces",
       "pxeboot.getPorts",
       // repo
-      "mirror.updateRepo",
-      "mirror.getLogs"
+      "repo.updateRepo",
+      "repo.list",
+      "repo.get"
     ],
     aliases: {
       // dns
@@ -79,8 +80,9 @@ const routes = [
       "GET pxeboot/interfaces": "pxeboot.getInterfaces",
       "GET pxeboot/ports": "pxeboot.getPorts",
       // repo
-      "PUT repo": "mirror.updateRepo",
-      "GET repo/logs/:id": "mirror.getLogs"
+      "PUT repo": "repo.updateRepo",
+      "GET repo/updates": "repo.list",
+      "GET repo/updates/:id": "repo.get"
     }
   }
 ];

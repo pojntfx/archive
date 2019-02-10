@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2019-02-10T20:39:11.402Z",
+	"__export_date": "2019-02-10T23:10:57.068Z",
 	"__export_source": "insomnia.desktop.app:v6.3.2",
 	"resources": [
 		{
@@ -556,13 +556,13 @@
 			"_type": "request"
 		},
 		{
-			"_id": "fld_1b2f5348fbf7459885f7ff7ff120ae4a",
-			"created": 1549817099775,
+			"_id": "fld_6052989ef7cd4f10ba83cec94986e168",
+			"created": 1549835928139,
 			"description": "",
 			"environment": {},
-			"metaSortKey": -1549817099775,
-			"modified": 1549817099775,
-			"name": "logs",
+			"metaSortKey": -1549816896697,
+			"modified": 1549835958147,
+			"name": "updates",
 			"parentId": "fld_3e69017b14954f89868f5c4d93ae2d40",
 			"_type": "request_group"
 		},
@@ -1406,32 +1406,49 @@
 			"_type": "request"
 		},
 		{
-			"_id": "req_e5b37d9d1669406191113c8fe6ff9d4f",
+			"_id": "req_82e69ba64ad0410db2a7fb2d3a2487cb",
 			"authentication": {},
 			"body": {},
-			"created": 1549817118887,
+			"created": 1549835928406,
 			"description": "",
 			"headers": [],
 			"isPrivate": false,
-			"metaSortKey": -1549817118887,
+			"metaSortKey": -1549313834895.5,
 			"method": "GET",
-			"modified": 1549817142801,
-			"name": "log",
-			"parameters": [
-				{
-					"id": "pair_2b8d8e7fdc8a4bbe84541e6994fafa99",
-					"name": "id",
-					"value": "{% prompt 'ID', '', '', '', false %}"
-				}
-			],
-			"parentId": "fld_1b2f5348fbf7459885f7ff7ff120ae4a",
+			"modified": 1549839492264,
+			"name": "updates",
+			"parameters": [],
+			"parentId": "fld_6052989ef7cd4f10ba83cec94986e168",
 			"settingDisableRenderRequestBody": false,
 			"settingEncodeUrl": true,
 			"settingMaxTimelineDataSize": 1000,
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "{{ gateway  }}/repo/logs",
+			"url": "{{ gateway  }}/repo/updates",
+			"_type": "request"
+		},
+		{
+			"_id": "req_5df04a401d2143129a841b95cf11ae9b",
+			"authentication": {},
+			"body": {},
+			"created": 1549835928411,
+			"description": "",
+			"headers": [],
+			"isPrivate": false,
+			"metaSortKey": -1549313834845.5,
+			"method": "GET",
+			"modified": 1549836013596,
+			"name": "update",
+			"parameters": [],
+			"parentId": "fld_6052989ef7cd4f10ba83cec94986e168",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingMaxTimelineDataSize": 1000,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "{{ gateway  }}/repo/updates/{% prompt 'ID', '', '', '', false %}",
 			"_type": "request"
 		}
 	]

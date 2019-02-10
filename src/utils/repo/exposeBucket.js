@@ -1,4 +1,4 @@
 const shell = require("shelljs");
 
 module.exports.exposeBucket = async () =>
-  shell.exec("mc policy download mirror_s3/repo");
+  shell.exec("mc policy download repo_s3/repo");

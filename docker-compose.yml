@@ -7,8 +7,11 @@ services:
       - KICKSTARTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
       - PREINSTALLSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
       - POSTINSTALLSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
-      - MINIO_ACCESS_KEY=mirror_s3
-      - MINIO_SECRET_KEY=mirror_s3_password
+      - REPO_QUEUE_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - REPO_QUEUE_PORT=6379
+      - REPO_QUEUE_HOST=repo_queue_db
+      - REPO_QUEUE_DB=0
+      - REPO_QUEUE_PASSWORD=repo_queue_db_password
       - SERVICEDIR=src/services/provisioner
       - SERVICES=*.js
     build: .
@@ -16,13 +19,14 @@ services:
       - .:/opt/pojntfx/provisioner:z
       - provisioner_node_modules:/opt/pojntfx/provisioner/node_modules:z
       - provisioner_tmp:/tmp/pojntfx/provisioner:z
-      - mirror_s3:/tmp/pojntfx/provisioner/mirror
     command: npm run start--watch
     networks:
       - main
       - mainscripts
     depends_on:
       - scripts_db
+      - repo_s3
+      - repo_queue_db
   pxeboot:
     environment:
       - SERVICEDIR=src/services/pxeboot
@@ -37,9 +41,9 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "57:57"
-      - "67:67"
-      - "69:69"
+      - 57:57
+      - 67:67
+      - 69:69
   dns:
     environment:
       - SERVICEDIR=src/services/dns
@@ -53,7 +57,7 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "53:53"
+      - 53:53
   gateway:
     environment:
       - GATEWAY_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
@@ -83,18 +87,49 @@ services:
       - scripts_db:/bitnami/mariadb
     networks:
       - mainscripts
-  mirror_s3:
+  repo_queue:
     environment:
-      - MINIO_ACCESS_KEY=mirror_s3
-      - MINIO_SECRET_KEY=mirror_s3_password
+      - MINIO_ACCESS_KEY=repo_s3
+      - MINIO_SECRET_KEY=repo_s3_password
+      - MINIO_HOST=http://repo_s3:9000
+      - REPO_QUEUE_PORT=6379
+      - REPO_QUEUE_HOST=repo_queue_db
+      - REPO_QUEUE_DB=0
+      - REPO_QUEUE_PASSWORD=repo_queue_db_password
+      - SERVICEDIR=src/services/repo
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - .:/opt/pojntfx/provisioner:z
+      - repo_queue_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - repo_queue_tmp:/tmp/pojntfx/provisioner:z
+      - repo_s3:/tmp/pojntfx/provisioner/repo:z
+    command: npm run start--watch
+    networks:
+      - main
+    depends_on:
+      - repo_s3
+  repo_s3:
+    environment:
+      - MINIO_ACCESS_KEY=repo_s3
+      - MINIO_SECRET_KEY=repo_s3_password
     image: minio/minio:RELEASE.2019-02-06T21-16-36Z
     volumes:
-      - mirror_s3:/data:z
+      - repo_s3:/data:z
     networks:
       - main
     ports:
       - 9000:9000
     command: server /data
+  repo_queue_db:
+    command: redis-server --requirepass repo_queue_db_password
+    image: redis:5.0.3
+    volumes:
+      - repo_queue_db:/data:z
+    networks:
+      - main
+    expose:
+      - 6379
 
 volumes:
   provisioner_node_modules:
@@ -106,7 +141,10 @@ volumes:
   dns_tmp:
   gateway_node_modules:
   scripts_db:
-  mirror_s3:
+  repo_s3:
+  repo_queue_db:
+  repo_queue_node_modules:
+  repo_queue_tmp:
 
 networks:
   main:
