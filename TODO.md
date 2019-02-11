@@ -1,3 +1,3 @@
 # Felix Pojtinger's Provisioner TODO
 
-- [ ] Add bindings for all `shell.exec`'s
+- [ ] Use async alternatives for `fs.writeFileSync` etc.

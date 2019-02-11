@@ -1,4 +1,4 @@
-const shell = require("shelljs");
+const { NsLookup } = require("../../bindings/nslookup");
 
 module.exports.getLookup = async ({ domain, dnsServer }) =>
-  shell.exec(`nslookup ${domain}${(dnsServer && ` ${dnsServer}`) || ""}`);
+  await NsLookup.getLookup({ domain, dnsServer });

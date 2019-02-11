@@ -1,6 +1,4 @@
-const shell = require("shelljs");
+const { Git } = require("../../bindings/git");
 
 module.exports.clone = async indir =>
-  shell.ls("-A", indir).find(file => file === ".git")
-    ? shell.exec(`git --git-dir="${indir}/.git" --work-tree="${indir}" pull`)
-    : shell.exec(`git clone https://github.com/ipxe/ipxe.git "${indir}"`);
+  Git.cloneOrPullRepo("https://github.com/ipxe/ipxe.git", indir);

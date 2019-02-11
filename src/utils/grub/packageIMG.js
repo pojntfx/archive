@@ -1,12 +1,15 @@
-const shell = require("shelljs");
+const { MkDosFs } = require("../../bindings/mkdosfs");
+const { Mcopy } = require("../../bindings/mcopy");
 
 module.exports.packageIMG = async (label, buildir, packagedir) => {
-  shell.exec(
-    `mkdosfs -F12 -n "${label
-      .split(" ")
-      .join("_")
-      .toUpperCase()}_EFI" -C ${packagedir}/grub.img 2048`
-  );
-  shell.exec(`mcopy -s -i ${packagedir}/grub.img ${buildir}/EFI ::`);
+  await MkDosFs.makeDosFilesystem({
+    label,
+    dest: `${packagedir}/grub.img`,
+    size: 2048
+  });
+  await Mcopy.mcopy({
+    src: `${buildir}/EFI`,
+    dest: `${packagedir}/grub.img`
+  });
   return `${packagedir}/grub.img`;
 };

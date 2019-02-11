@@ -1,4 +1,7 @@
-const shell = require("shelljs");
+const { QuickFedoraMirror } = require("../../bindings/quickFedoraMirror");
 
-module.exports.getUpstream = async (srcdir, configfile) =>
-  shell.exec(`${srcdir}/quick-fedora-mirror -a -c ${configfile} -d 7`);
+module.exports.getUpstream = async (srcdir, configFile) =>
+  QuickFedoraMirror.mirror({
+    pathToBinary: `${srcdir}/quick-fedora-mirror`,
+    configFile
+  });

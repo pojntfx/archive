@@ -1,4 +1,9 @@
 const shell = require("shelljs");
+const { MinioClient } = require("../../bindings/minioClient");
 
 module.exports.publishToBucket = async outdir =>
-  shell.exec(`mc mirror ${outdir} repo_s3/repo --remove --overwrite`);
+  await MinioClient.mirror({
+    src: outdir,
+    hostName: "repo_s3",
+    bucketName: "repo"
+  });

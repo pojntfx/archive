@@ -1,4 +1,6 @@
 const shell = require("shelljs");
+const { Zip } = require("../../bindings/zip");
+const { Xorriso } = require("../../bindings/xorriso");
 
 module.exports.createISO = async ({
   indir,
@@ -9,24 +11,16 @@ module.exports.createISO = async ({
   grubImgPath,
   label
 }) => {
-  shell.exec(`unzip -d ${indir} ${indir}/content.zip`);
+  await Zip.extractArchive(indir, `${indir}/content.zip`);
   shell.rm(`${indir}/content.zip`);
-  shell.exec(`xorriso \
-  -as mkisofs \
-  -isohybrid-mbr "${indir}/${isohdpfxBinPath}" \
-  -r \
-  -partition_offset 16 -J -l -joliet-long \
-  -c "${bootCatPath}" \
-  -b "${isolinuxBinPath}" \
-  -no-emul-boot \
-  -boot-info-table \
-  -boot-load-size 4 \
-  -eltorito-alt-boot \
-  -e "${grubImgPath}" \
-  -no-emul-boot \
-  -isohybrid-gpt-basdat \
-  -V "${label}" \
-  -o "${packagedir}/out.iso" "${indir}"
-`);
+  await Xorriso.createBootableIso({
+    src: indir,
+    isohdpfxBinPath: `${indir}/${isohdpfxBinPath}`,
+    bootCatPath,
+    grubImgPath,
+    isolinuxBinPath,
+    label,
+    dest: `${packagedir}/out.iso`
+  });
   return `${packagedir}/out.iso`;
 };

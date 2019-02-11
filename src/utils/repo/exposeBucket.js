@@ -1,4 +1,8 @@
-const shell = require("shelljs");
+const { MinioClient } = require("../../bindings/minioClient");
 
 module.exports.exposeBucket = async () =>
-  shell.exec("mc policy download repo_s3/repo");
+  MinioClient.setPolicy({
+    hostName: "repo_s3",
+    bucketName: "repo",
+    policy: "download"
+  });

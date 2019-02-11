@@ -1,5 +1,6 @@
 const shell = require("shelljs");
 const fs = require("fs");
+const { Echo } = require("../../bindings/echo");
 
 module.exports.config = async (
   configfile,
@@ -8,7 +9,7 @@ module.exports.config = async (
   remote,
   logfile
 ) => {
-  await shell.exec(`echo "" > ${configfile}`);
+  await Echo.echoEmpty(configfile);
   return fs.writeFileSync(
     configfile,
     `DESTD=${outdir}

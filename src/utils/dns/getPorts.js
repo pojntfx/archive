@@ -1,3 +1,3 @@
-const shell = require("shelljs");
+const { Ss } = require("../../bindings/ss");
 
-module.exports.getPorts = async () => shell.exec("ss -tlnp");
+module.exports.getPorts = async () => await Ss.getAllPorts();

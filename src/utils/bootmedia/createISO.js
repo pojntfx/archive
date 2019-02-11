@@ -10,6 +10,7 @@ const shell = require("shelljs");
 const { configureGRUB } = require("./configureGRUB");
 const { configureSYSLINUX } = require("./configureSYSLINUX");
 const { package } = require("./package");
+const { Zip } = require("../../bindings/zip");
 
 module.exports.createISO = async ({
   script,
@@ -52,14 +53,14 @@ module.exports.createISO = async ({
     ipxebios.on("close", () => {
       ipxeuefi.on("close", () => {
         grubimg.on("close", async () => {
-          shell.exec(`unzip -d ${paths.root} ${files.grubefi}`);
+          await Zip.extractArchive(files.grubefi, paths.root);
           shell.rm(files.grubefi);
 
           await configureGRUB(paths.grub, paths.root, efiLabel);
           await configureSYSLINUX(paths.isolinux);
 
           shell.cd(paths.root);
-          shell.exec(`zip -r ${paths.package}/out.zip *`);
+          await Zip.createArchive("*", `${paths.package}/out.zip`);
 
           const iso = await package(files.iso, paths.package, label, ctx);
           iso.on("close", () => resolve(files.iso));
