@@ -1,15 +1,15 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2019-02-10T23:10:57.068Z",
+	"__export_date": "2019-02-11T23:20:08.615Z",
 	"__export_source": "insomnia.desktop.app:v6.3.2",
 	"resources": [
 		{
 			"_id": "wrk_7b27316fe8d94585ae8e4ba068b03acf",
 			"created": 1548941416073,
 			"description": "",
-			"modified": 1549314382978,
-			"name": "SDFW Provisioner",
+			"modified": 1549926746732,
+			"name": "Felicitas Pojtinger's Provisioner",
 			"parentId": null,
 			"_type": "workspace"
 		},
@@ -324,7 +324,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"label\": \"SDFW Boot Medium\",\n\t\"efiLabel\": \"SDFW Boot Medium EFI\",\n\t\"script\": \"#!ipxe\\nautoboot\"\n}"
+				"text": "{\n\t\"label\": \"SDPF Boot Medium\",\n\t\"efiLabel\": \"SDPF Boot Medium EFI\",\n\t\"script\": \"#!ipxe\\nautoboot\"\n}"
 			},
 			"created": 1549312565239,
 			"description": "",
