@@ -1,7 +1,8 @@
 const shell = require("shelljs");
+const { Zip } = require("../../bindings/zip");
 
 module.exports.packageFolder = async (buildir, packagedir) => {
   shell.cd(buildir);
-  shell.exec(`zip -r ${packagedir}/grub.zip EFI`);
+  await Zip.createArchive("EFI", `${packagedir}/grub.zip`);
   return `${packagedir}/grub.zip`;
 };

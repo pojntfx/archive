@@ -1,5 +1,6 @@
 const shell = require("shelljs");
 const fs = require("fs");
+const { AutoTools } = require("../../bindings/autotools");
 
 const initialize = (indir, outdir, script) => {
   shell.mkdir("-p", `${indir}/config/`);
@@ -17,8 +18,9 @@ module.exports.compile = async (
   extension
 ) => {
   await initialize(indir, outdir, script);
-  shell.exec(
-    `make ${platform}/${driver}.${extension} EMBED=${indir}/config/preseed.ipxe`
+  await AutoTools.make(
+    `${platform}/${driver}.${extension}`,
+    `EMBED=${indir}/config/preseed.ipxe NO_WERROR=1`
   );
   shell.cp(`${indir}/src/${platform}/${driver}.${extension}`, outdir);
   return `${indir}/src/${platform}/${driver}.${extension}`;

@@ -1,7 +1,7 @@
-const shell = require("shelljs");
+const { Pkon } = require("../../bindings/pkcon");
 
 module.exports.check = async available => {
-  const availablePackages = shell.exec(`pkcon get-packages --filter installed`);
+  const availablePackages = Pkon.getAllInstalledPackages();
   return [
     "git",
     "gcc",

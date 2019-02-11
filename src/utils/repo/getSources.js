@@ -1,8 +1,4 @@
-const shell = require("shelljs");
+const { Git } = require("../../bindings/git");
 
 module.exports.getSources = async srcdir =>
-  shell.ls("-A", srcdir).find(file => file === ".git")
-    ? shell.exec(`git --git-dir="${srcdir}/.git" --work-tree="${srcdir}" pull`)
-    : shell.exec(
-        `git clone https://pagure.io/quick-fedora-mirror.git "${srcdir}"`
-      );
+  Git.cloneOrPullRepo("https://pagure.io/quick-fedora-mirror.git", srcdir);

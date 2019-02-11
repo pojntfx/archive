@@ -1,6 +1,6 @@
-const shell = require("shelljs");
+const { Ip } = require("../../bindings/ip");
 
 module.exports.setNetwork = async interface => {
-  shell.exec(`ip addr add 10.0.0.1/24 dev ${interface}`);
-  return shell.exec(`ip link set ${interface} up`);
+  await Ip.addIpAddressToInterface("10.0.0.1/24", interface);
+  return await Ip.setInterfaceStatus("up", interface);
 };

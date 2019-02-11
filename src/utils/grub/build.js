@@ -1,5 +1,7 @@
 const shell = require("shelljs");
 const fs = require("fs");
+const { AutoTools } = require("../../bindings/autotools");
+const { GrubMkImage } = require("../../bindings/grubMkimage");
 
 module.exports.build = async (
   indir,
@@ -10,10 +12,14 @@ module.exports.build = async (
   label
 ) => {
   shell.cd(indir);
-  shell.exec("./autogen.sh");
-  shell.exec(`./configure --prefix=${indir}/out --with-platform=${extension}`);
-  shell.exec("make");
-  shell.exec("make install");
+  await AutoTools.autogen(".");
+  await AutoTools.configure({
+    path: ".",
+    prefix: `${indir}/out`,
+    args: `--with-platform=${extension}`
+  });
+  await AutoTools.make();
+  await AutoTools.makeInstall();
   // Create the embedded script
   fs.writeFileSync(
     `${indir}/embedded.cfg`,
@@ -30,7 +36,11 @@ module.exports.build = async (
   );
   shell.mkdir("-p", `${outdir}/EFI/BOOT`);
   // Create the GRUB EFI executable
-  return shell.exec(
-    `${indir}/out/bin/grub-mkimage -O ${platform} -o ${outdir}/EFI/BOOT/boot${architecture}.efi -p "" --config "${indir}/embedded.cfg" part_gpt part_msdos ntfs ntfscomp hfsplus fat ext2 normal chain boot configfile linux multiboot iso9660 gfxmenu gfxterm loadenv efi_gop efi_uga loadbios fixvideo png ext2 ntfscomp loopback search minicmd cat cpuid appleldr elf usb videotest halt help ls reboot echo test normal sleep memdisk tar font video_fb video gettext true  video_bochs video_cirrus multiboot2 acpi gfxterm_background gfxterm_menu linux16`
-  );
+  return GrubMkImage.makeImage({
+    pathToBinary: `${indir}/out/bin/grub-mkimage`,
+    platform,
+    root: outdir,
+    architecture,
+    configFile: `${indir}/embedded.cfg`
+  });
 };

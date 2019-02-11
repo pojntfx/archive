@@ -1,8 +1,14 @@
-const shell = require("shelljs");
+const { MinioClient } = require("../../bindings/minioClient");
 
-module.exports.configBucket = (s3Endpoint, username, password) => {
-  shell.exec(
-    `mc config host add repo_s3 ${s3Endpoint} ${username} ${password}`
-  );
-  shell.exec(`mc mb repo_s3/repo`);
+module.exports.configBucket = async (s3Endpoint, username, password) => {
+  await MinioClient.addHost({
+    name: "repo_s3",
+    s3Endpoint,
+    username,
+    password
+  });
+  return await MinioClient.createBucket({
+    hostName: "repo_s3",
+    bucketName: "repo"
+  });
 };
