@@ -5,7 +5,7 @@ const fsStat = promisify(fs.stat);
 const access = async file =>
   new Promise((resolve, reject) =>
     fsStat(file)
-      .then(stats => resolve(stats.isFile()))
+      .then(stats => resolve(stats.isFile() || stats.isDirectory()))
       .catch(err => {
         if (err.code === "ENOENT") {
           resolve(false);
