@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 const { createISO } = require("../../utils/bootmedia/createISO");
 const uuid1 = require("uuid/v1");
 const shell = require("shelljs");
@@ -28,15 +28,19 @@ module.exports = {
       params: {
         id: "string"
       },
-      handler: ctx =>
+      handler: async ctx =>
         shell
           .ls("/tmp/pojntfx/provisioner/bootmedia")
           .filter(folder => folder === ctx.params.id).length > 0
-          ? fs.existsSync(
-              `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}/package/out.iso`
-            )
+          ? (await fs.exists(
+              `/tmp/pojntfx/provisioner/bootmedia/${
+                ctx.params.id
+              }/package/out.iso`
+            ))
             ? fs.createReadStream(
-                `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}/package/out.iso`
+                `/tmp/pojntfx/provisioner/bootmedia/${
+                  ctx.params.id
+                }/package/out.iso`
               )
             : new MoleculerError(
                 "This boot medium could not be found",
@@ -49,27 +53,34 @@ module.exports = {
               "ERR_BOOT_MEDIUM_NOT_FOUND"
             )
     },
-    list: () =>
-      shell.ls("-l", "/tmp/pojntfx/provisioner/bootmedia").map(folder =>
-        fs.existsSync(
-          `/tmp/pojntfx/provisioner/bootmedia/${folder.name}/package/out.iso`
+    list: async () =>
+      await Promise.all(
+        shell.ls("-l", "/tmp/pojntfx/provisioner/bootmedia").map(async folder =>
+          (await fs.exists(
+            `/tmp/pojntfx/provisioner/bootmedia/${folder.name}/package/out.iso`
+          ))
+            ? {
+                ...folder,
+                id: folder.name,
+                containsBootMedium: true
+              }
+            : {
+                ...folder,
+                id: folder.name,
+                containsBootMedium: false
+              }
         )
-          ? {
-              ...folder,
-              id: folder.name,
-              containsBootMedium: true
-            }
-          : {
-              ...folder,
-              id: folder.name,
-              containsBootMedium: false
-            }
       ),
     remove: {
       params: { id: "string" },
-      handler: ctx => {
-        if (fs.existsSync(`/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}`)) {
-          shell.rm("-rf", `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}`);
+      handler: async ctx => {
+        if (
+          await fs.exists(`/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}`)
+        ) {
+          shell.rm(
+            "-rf",
+            `/tmp/pojntfx/provisioner/bootmedia/${ctx.params.id}`
+          );
           return ctx.params.id;
         } else {
           throw new MoleculerError(

@@ -1,5 +1,5 @@
 const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 const { AutoTools } = require("../../bindings/autotools");
 const { GrubMkImage } = require("../../bindings/grubMkimage");
 
@@ -16,12 +16,12 @@ module.exports.build = async (
   await AutoTools.configure({
     path: ".",
     prefix: `${indir}/out`,
-    args: `--with-platform=${extension}`
+    args: `--with-platform=${extension} --disable-werror`
   });
   await AutoTools.make();
   await AutoTools.makeInstall();
   // Create the embedded script
-  fs.writeFileSync(
+  await fs.writeFile(
     `${indir}/embedded.cfg`,
     `search --file --set=root /${label
       .split(" ")

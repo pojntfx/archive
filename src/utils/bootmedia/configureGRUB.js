@@ -1,8 +1,8 @@
 const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.configureGRUB = async (grubPath, indir, label) => {
-  fs.writeFileSync(
+  await fs.writeFile(
     `${grubPath}/grub.cfg`,
     `set default=1
 set timeout=1

@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.setDNSMasq = async (
   interface,
@@ -11,6 +11,6 @@ module.exports.setDNSMasq = async (
     .replace("INTERFACE", interface)
     .replace("DOMAIN", domain)
     .replace("TFTPROOT", tftpDir);
-  fs.writeFileSync(`${tempdir}/dnsmasq.conf`, script);
+  await fs.writeFile(`${tempdir}/dnsmasq.conf`, script);
   return script;
 };

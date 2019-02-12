@@ -59,6 +59,7 @@ Now, you can either use the REST api directly on [localhost:3000/api](http://loc
   boot
   ```
   While it downloads the `initrd.img` and `vmlinuz` files quite quickly, downloading the `installer.img` and so on images after network configuration can take some time, and progress will not be shown. Just be patient!
+- Due to an weird bug, `PUT`ing the `mainscript` can get stuck on the first time. Just restart the services once; it seems to be a problem with the NodeJS streams not `close`ing.
 
 ## Docs
 

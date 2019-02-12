@@ -1,7 +1,7 @@
 const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.getScript = async tempdir =>
-  fs.existsSync(`${tempdir}/dnsmasq.conf`)
+  (await fs.exists(`${tempdir}/dnsmasq.conf`))
     ? shell.cat(`${tempdir}/dnsmasq.conf`)
     : false;

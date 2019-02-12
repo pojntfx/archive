@@ -1,5 +1,4 @@
-const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 const { Echo } = require("../../bindings/echo");
 
 module.exports.config = async (
@@ -10,7 +9,7 @@ module.exports.config = async (
   logfile
 ) => {
   await Echo.echoEmpty(configfile);
-  return fs.writeFileSync(
+  return await fs.writeFile(
     configfile,
     `DESTD=${outdir}
 TIMEFILE=${timefile}

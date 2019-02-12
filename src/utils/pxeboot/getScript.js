@@ -1,7 +1,7 @@
 const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.getScript = async scriptdir =>
-  fs.existsSync(`${scriptdir}/script.ipxe`)
+  (await fs.exists(`${scriptdir}/script.ipxe`))
     ? shell.cat(`${scriptdir}/script.ipxe`)
     : false;
