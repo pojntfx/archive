@@ -1,5 +1,5 @@
 const { init } = require("./init");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.updateScript = async ({
   noDhcpInterface,
@@ -27,6 +27,6 @@ log-dhcp`
     .replace(/DOMAIN/g, domain)
     .replace("FIRST_NAME_SERVER", firstNameServer)
     .replace("SECOND_NAME_SERVER", secondNameServer);
-  fs.writeFileSync(`${tempdir}/dnsmasq.conf`, script);
+  await fs.writeFile(`${tempdir}/dnsmasq.conf`, script);
   return script;
 };

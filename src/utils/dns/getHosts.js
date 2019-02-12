@@ -1,5 +1,5 @@
 const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.getHosts = async tempdir =>
-  fs.existsSync(`${tempdir}/hosts`) ? shell.cat(`${tempdir}/hosts`) : false;
+  (await fs.exists(`${tempdir}/hosts`)) ? shell.cat(`${tempdir}/hosts`) : false;

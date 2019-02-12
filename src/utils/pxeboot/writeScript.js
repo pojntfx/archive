@@ -1,9 +1,7 @@
-const fs = require("fs");
-const util = require("util");
-const writeFile = util.promisify(fs.writeFile);
+const fs = require("../../bindings/asyncFs");
 const shell = require("shelljs");
 
 module.exports.writeScript = async (scriptDir, script) => {
   shell.mkdir("-p", scriptDir);
-  return writeFile(`${scriptDir}/script.ipxe`, script);
+  return fs.writeFile(`${scriptDir}/script.ipxe`, script);
 };

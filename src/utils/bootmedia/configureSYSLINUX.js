@@ -1,7 +1,7 @@
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 
 module.exports.configureSYSLINUX = async isolinuxPath =>
-  fs.writeFileSync(
+  await fs.writeFile(
     `${isolinuxPath}/isolinux.cfg`,
     `default iPXE
           label iPXE

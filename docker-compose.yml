@@ -76,6 +76,7 @@ services:
       - pxeboot
       - provisioner
       - scripts_db
+      - builder
   scripts_db:
     environment:
       - MARIADB_ROOT_PASSWORD=scripts_db_root_password
@@ -130,6 +131,18 @@ services:
       - main
     expose:
       - 6379
+  builder:
+    environment:
+      - SERVICEDIR=src/services/build
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - .:/opt/pojntfx/provisioner:z
+      - builder_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - builder_tmp:/tmp/pojntfx/provisioner:z
+    command: npm run start--watch
+    networks:
+      - main
 
 volumes:
   provisioner_node_modules:
@@ -145,6 +158,8 @@ volumes:
   repo_queue_db:
   repo_queue_node_modules:
   repo_queue_tmp:
+  builder_node_modules:
+  builder_tmp:
 
 networks:
   main:

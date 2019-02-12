@@ -1,3 +1,3 @@
 # Felicitas Pojtinger's Provisioner TODO
 
-- [ ] Use async alternatives for `fs.writeFileSync` etc.
+> All done for now!

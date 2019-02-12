@@ -1,11 +1,11 @@
 const shell = require("shelljs");
-const fs = require("fs");
+const fs = require("../../bindings/asyncFs");
 const { AutoTools } = require("../../bindings/autotools");
 
-const initialize = (indir, outdir, script) => {
+const initialize = async (indir, outdir, script) => {
   shell.mkdir("-p", `${indir}/config/`);
   shell.mkdir("-p", outdir);
-  fs.writeFileSync(`${indir}/config/preseed.ipxe`, script);
+  await fs.writeFile(`${indir}/config/preseed.ipxe`, script);
   shell.cd(`${indir}/src/`);
 };
 
