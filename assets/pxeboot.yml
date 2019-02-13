@@ -28,8 +28,8 @@ spec:
           image: registry.gitlab.com/pojntfx/projects/provisioner-pxeboot
           resources:
             limits:
-              memory: 128Mi
-              cpu: 50m
+              memory: 256Mi
+              cpu: 250m
           volumeMounts:
             - name: provisioner-pxeboot-tmp
               mountPath: /tmp/pojntfx/provisioner
@@ -37,6 +37,9 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
+          envFrom:
+            - configMapRef:
+                name: provisioner-redis-transporter-public
       volumes:
         - name: provisioner-pxeboot-tmp
           persistentVolumeClaim:

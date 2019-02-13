@@ -20,7 +20,7 @@ data:
   POSTINSTALLSCRIPTS_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
   REPO_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
   REDIS_PORT: "6379"
-  REDIS_HOST: provisioner-queue
+  REDIS_HOST: provisioner-redis
   REDIS_DB: "0"
   REDIS_PASSWORD: provisioner_queue_db_password
 ---
@@ -45,11 +45,14 @@ spec:
           image: registry.gitlab.com/pojntfx/projects/provisioner-main
           resources:
             limits:
-              memory: 128Mi
-              cpu: 50m
+              memory: 256Mi
+              cpu: 250m
           volumeMounts:
             - name: provisioner-main-tmp
               mountPath: /tmp/pojntfx/provisioner
+          env:
+            - name: TRANSPORTER
+              value: redis://provisioner-redis-transporter:6379
       volumes:
         - name: provisioner-main-tmp
           persistentVolumeClaim:

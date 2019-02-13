@@ -18,7 +18,7 @@ data:
   MINIO_ACCESS_KEY: provisioner_minio
   MINIO_SECRET_KEY: provisioner_minio_password
   REDIS_PORT: "6379"
-  REDIS_HOST: provisioner-queue
+  REDIS_HOST: provisioner-redis
   REDIS_DB: "0"
   REDIS_PASSWORD: provisioner_queue_db_password
 ---
@@ -43,11 +43,14 @@ spec:
           image: registry.gitlab.com/pojntfx/projects/provisioner-repo
           resources:
             limits:
-              memory: 128Mi
-              cpu: 50m
+              memory: 256Mi
+              cpu: 250m
           volumeMounts:
             - name: provisioner-repo-tmp
               mountPath: /tmp/pojntfx/provisioner
+          env:
+            - name: TRANSPORTER
+              value: redis://provisioner-redis-transporter:6379
       volumes:
         - name: provisioner-repo-tmp
           persistentVolumeClaim:
