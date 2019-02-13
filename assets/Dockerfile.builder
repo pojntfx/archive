@@ -22,7 +22,7 @@ RUN npm install
 COPY src src
 
 # Configure the app
-ENV SERVICEDIR="src/services/build"
+ENV SERVICEDIR="src/services/builders/managers"
 ENV SERVICES="*.js"
 ENV TRANSPORTER="TCP"
 
