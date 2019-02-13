@@ -7,13 +7,11 @@ LABEL license="AGPL-3.0"
 
 # Update the system and install dependencies
 RUN dnf update -y
-RUN dnf install -y npm git gcc binutils make perl xz xz-devel mtools genisoimage flex bison xorriso iproute dnsmasq syslinux python autoconf automake dosfstools bind-utils rsync zsh wget
-RUN wget -O /usr/bin/mc https://dl.minio.io/client/mc/release/linux-amd64/mc
-RUN chmod +x /usr/bin/mc
+RUN dnf install -y npm iproute dnsmasq bind-utils
 
 # Setup work dir
-RUN mkdir -p /opt/pojntfx/provisioner
-WORKDIR /opt/pojntfx/provisioner
+RUN mkdir -p /opt/pojntfx/provisioner/dns
+WORKDIR /opt/pojntfx/provisioner/dns
 
 # Install dependencies
 COPY package.json .
@@ -24,8 +22,15 @@ RUN npm install
 COPY src src
 
 # Configure the app
-ENV SERVICEDIR="src/services"
+ENV SERVICEDIR="src/services/dns"
+ENV SERVICES="*.js"
 ENV TRANSPORTER="TCP"
+
+# Cache files
+VOLUME [ "/tmp/pojntfx/provisioner" ]
 
 # Start the app
 CMD npm start
+
+# Expose the app
+EXPOSE 53

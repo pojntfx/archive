@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-db
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-db
+  template:
+    metadata:
+      labels:
+        app: provisioner-db
+    spec:
+      containers:
+        - name: provisioner-db
+          envFrom:
+            - configMapRef:
+                name: provisioner-db
+          image: bitnami/mariadb:10.2.21
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 100m
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: provisioner-db-data
+              mountPath: /bitnami/mariadb
+      volumes:
+        - name: provisioner-db-data
+          persistentVolumeClaim:
+            claimName: provisioner-db-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-db-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: provisioner-db
+spec:
+  selector:
+    app: provisioner-db
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provisioner-db
+data:
+  MARIADB_ROOT_PASSWORD: provisioner_db_root_password
+  MARIADB_USER: provisioner_db_user
+  MARIADB_PASSWORD: provisioner_db_password
+  MARIADB_DATABASE: provisioner_main
