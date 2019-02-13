@@ -4,7 +4,7 @@ metadata:
   name: provisioner-pxeboot-tmp
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
@@ -28,8 +28,8 @@ spec:
           image: registry.gitlab.com/pojntfx/projects/provisioner-pxeboot
           resources:
             limits:
-              memory: 256Mi
-              cpu: 250m
+              memory: 128Mi
+              cpu: 80m
           volumeMounts:
             - name: provisioner-pxeboot-tmp
               mountPath: /tmp/pojntfx/provisioner
@@ -39,7 +39,7 @@ spec:
                 - NET_ADMIN
           envFrom:
             - configMapRef:
-                name: provisioner-redis-transporter-public
+                name: provisioner-nats-public
       volumes:
         - name: provisioner-pxeboot-tmp
           persistentVolumeClaim:

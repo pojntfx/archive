@@ -4,7 +4,7 @@ metadata:
   name: provisioner-builder-tmp
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
@@ -28,13 +28,13 @@ spec:
           resources:
             limits:
               memory: 256Mi
-              cpu: 250m
+              cpu: 256m
           volumeMounts:
             - name: provisioner-builder-tmp
               mountPath: /tmp/pojntfx/provisioner
           env:
             - name: TRANSPORTER
-              value: redis://provisioner-redis-transporter:6379
+              value: nats://provisioner-nats:4222
       volumes:
         - name: provisioner-builder-tmp
           persistentVolumeClaim:

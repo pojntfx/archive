@@ -38,4 +38,4 @@ deploy:
       - assets/mariadb.yml
       - assets/redis.yml
       - assets/minio.yml
-      - assets/redis-transporter.yml
+      - assets/nats.yml
