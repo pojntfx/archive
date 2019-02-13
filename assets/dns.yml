@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-dns
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-dns
+  template:
+    metadata:
+      labels:
+        app: provisioner-dns
+    spec:
+      hostNetwork: true
+      containers:
+        - name: provisioner-dns
+          image: pojntfx/provisioner-dns
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 100m
+          volumeMounts:
+            - name: provisioner-dns-tmp
+              mountPath: /tmp/pojntfx/provisioner
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      volumes:
+        - name: provisioner-dns-tmp
+          persistentVolumeClaim:
+            claimName: provisioner-dns-tmp
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-dns-tmp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

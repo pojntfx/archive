@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-builder
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-builder
+  template:
+    metadata:
+      labels:
+        app: provisioner-builder
+    spec:
+      containers:
+        - name: provisioner-builder
+          image: pojntfx/provisioner-builder
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 100m
+          volumeMounts:
+            - name: provisioner-builder-tmp
+              mountPath: /tmp/pojntfx/provisioner
+      volumes:
+        - name: provisioner-builder-tmp
+          persistentVolumeClaim:
+            claimName: provisioner-builder-tmp
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-builder-tmp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
