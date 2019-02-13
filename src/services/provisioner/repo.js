@@ -8,15 +8,15 @@ module.exports = {
   mixins: [
     QueueService({
       redis: {
-        port: process.env.REPO_QUEUE_PORT,
-        host: process.env.REPO_QUEUE_HOST,
-        db: process.env.REPO_QUEUE_DB,
-        password: process.env.REPO_QUEUE_PASSWORD
+        port: process.env.REDIS_PORT,
+        host: process.env.REDIS_HOST,
+        db: process.env.REDIS_DB,
+        password: process.env.REDIS_PASSWORD
       }
     }),
     DbService
   ],
-  adapter: new SqlAdapter(process.env.REPO_QUEUE_DB_URI),
+  adapter: new SqlAdapter(process.env.REPO_MARIADB_URI),
   model: {
     name: "update",
     define: {

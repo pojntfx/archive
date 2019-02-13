@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 module.exports = {
   name: "subscripts",
   mixins: [DbService],
-  adapter: new SqlAdapter(process.env.SUBSCRIPTS_DB_URI),
+  adapter: new SqlAdapter(process.env.SUBSCRIPTS_MARIADB_URI),
   model: {
     name: "subscript",
     define: {

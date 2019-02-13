@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 module.exports = {
   name: "kickstarts",
   mixins: [DbService],
-  adapter: new SqlAdapter(process.env.KICKSTARTS_DB_URI),
+  adapter: new SqlAdapter(process.env.KICKSTARTS_MARIADB_URI),
   model: {
     name: "kickstart",
     define: {

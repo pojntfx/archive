@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 module.exports = {
   name: "postinstallscripts",
   mixins: [DbService],
-  adapter: new SqlAdapter(process.env.POSTINSTALLSCRIPTS_DB_URI),
+  adapter: new SqlAdapter(process.env.POSTINSTALLSCRIPTS_MARIADB_URI),
   model: {
     name: "postinstallscript",
     define: {
