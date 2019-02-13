@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-minio-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provisioner-minio
+data:
+  MINIO_ACCESS_KEY: provisioner_minio
+  MINIO_SECRET_KEY: provisioner_minio_password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-minio
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-minio
+  template:
+    metadata:
+      labels:
+        app: provisioner-minio
+    spec:
+      containers:
+        - name: provisioner-minio
+          envFrom:
+            - configMapRef:
+                name: provisioner-minio
+          image: minio/minio:RELEASE.2019-02-06T21-16-36Z
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 50m
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - name: provisioner-minio-data
+              mountPath: /data
+          args:
+            - server
+            - /data
+      volumes:
+        - name: provisioner-minio-data
+          persistentVolumeClaim:
+            claimName: provisioner-minio-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: provisioner-minio
+spec:
+  selector:
+    app: provisioner-minio
+  ports:
+    - port: 9000
+      targetPort: 9000

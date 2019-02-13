@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: provisioner-dns-tmp
+  name: provisioner-pxeboot-tmp
 spec:
   accessModes:
     - ReadWriteOnce
@@ -12,32 +12,32 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: provisioner-dns
+  name: provisioner-pxeboot
 spec:
   selector:
     matchLabels:
-      app: provisioner-dns
+      app: provisioner-pxeboot
   template:
     metadata:
       labels:
-        app: provisioner-dns
+        app: provisioner-pxeboot
     spec:
       hostNetwork: true
       containers:
-        - name: provisioner-dns
-          image: registry.gitlab.com/pojntfx/projects/provisioner-dns
+        - name: provisioner-pxeboot
+          image: registry.gitlab.com/pojntfx/projects/provisioner-pxeboot
           resources:
             limits:
               memory: 128Mi
               cpu: 50m
           volumeMounts:
-            - name: provisioner-dns-tmp
+            - name: provisioner-pxeboot-tmp
               mountPath: /tmp/pojntfx/provisioner
           securityContext:
             capabilities:
               add:
                 - NET_ADMIN
       volumes:
-        - name: provisioner-dns-tmp
+        - name: provisioner-pxeboot-tmp
           persistentVolumeClaim:
-            claimName: provisioner-dns-tmp
+            claimName: provisioner-pxeboot-tmp

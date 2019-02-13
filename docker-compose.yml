@@ -3,19 +3,19 @@ version: "3"
 services:
   provisioner:
     environment:
-      - SUBSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
-      - KICKSTARTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
-      - PREINSTALLSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
-      - POSTINSTALLSCRIPTS_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
-      - REPO_QUEUE_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
-      - REPO_QUEUE_PORT=6379
-      - REPO_QUEUE_HOST=repo_queue_db
-      - REPO_QUEUE_DB=0
-      - REPO_QUEUE_PASSWORD=repo_queue_db_password
+      - SUBSCRIPTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - KICKSTARTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - PREINSTALLSCRIPTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - POSTINSTALLSCRIPTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - REPO_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - REDIS_PORT=6379
+      - REDIS_HOST=repo_queue_db
+      - REDIS_DB=0
+      - REDIS_PASSWORD=repo_queue_db_password
       - SERVICEDIR=src/services/provisioner
       - SERVICES=*.js
     build: .
-    volumes:
+    volumes: 
       - .:/opt/pojntfx/provisioner:z
       - provisioner_node_modules:/opt/pojntfx/provisioner/node_modules:z
       - provisioner_tmp:/tmp/pojntfx/provisioner:z
@@ -93,10 +93,10 @@ services:
       - MINIO_ACCESS_KEY=repo_s3
       - MINIO_SECRET_KEY=repo_s3_password
       - MINIO_HOST=http://repo_s3:9000
-      - REPO_QUEUE_PORT=6379
-      - REPO_QUEUE_HOST=repo_queue_db
-      - REPO_QUEUE_DB=0
-      - REPO_QUEUE_PASSWORD=repo_queue_db_password
+      - REDIS_PORT=6379
+      - REDIS_HOST=repo_queue_db
+      - REDIS_DB=0
+      - REDIS_PASSWORD=repo_queue_db_password
       - SERVICEDIR=src/services/repo
       - SERVICES=*.js
     build: .
