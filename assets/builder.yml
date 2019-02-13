@@ -27,11 +27,14 @@ spec:
           image: registry.gitlab.com/pojntfx/projects/provisioner-builder
           resources:
             limits:
-              memory: 128Mi
-              cpu: 50m
+              memory: 256Mi
+              cpu: 250m
           volumeMounts:
             - name: provisioner-builder-tmp
               mountPath: /tmp/pojntfx/provisioner
+          env:
+            - name: TRANSPORTER
+              value: redis://provisioner-redis-transporter:6379
       volumes:
         - name: provisioner-builder-tmp
           persistentVolumeClaim:
