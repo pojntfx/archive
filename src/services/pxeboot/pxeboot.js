@@ -31,21 +31,29 @@ module.exports = {
         await init(iPXEBIOSPath, iPXEUEFIPath, scriptDir);
 
         const ipxeBIOS = fs.createWriteStream(iPXEBIOSPath);
-        const streamBIOS = await ctx.call("ipxe.create", {
-          script: ctx.params.script,
-          platform: "bin-x86_64-pcbios",
-          driver: "ipxe",
-          extension: "kpxe"
-        });
+        const streamBIOS = await ctx.call(
+          "ipxe.create",
+          {
+            script: ctx.params.script,
+            platform: "bin-x86_64-pcbios",
+            driver: "ipxe",
+            extension: "kpxe"
+          },
+          { timeout: 300000 }
+        );
         streamBIOS.pipe(ipxeBIOS);
 
         const ipxeUEFI = fs.createWriteStream(iPXEUEFIPath);
-        const streamUEFI = await ctx.call("ipxe.create", {
-          script: ctx.params.script,
-          platform: "bin-x86_64-efi",
-          driver: "ipxe",
-          extension: "efi"
-        });
+        const streamUEFI = await ctx.call(
+          "ipxe.create",
+          {
+            script: ctx.params.script,
+            platform: "bin-x86_64-efi",
+            driver: "ipxe",
+            extension: "efi"
+          },
+          { timeout: 300000 }
+        );
         streamUEFI.pipe(ipxeUEFI);
 
         return new Promise(resolve =>
@@ -72,9 +80,9 @@ module.exports = {
         return script;
       } else {
         throw new MoleculerError(
-          "No DNS script has yet been written",
+          "No mainscript has yet been written",
           404,
-          "ERR_DNS_SCRIPT_NOT_FOUND"
+          "ERR_MAINSCRIPT_SCRIPT_NOT_FOUND"
         );
       }
     },

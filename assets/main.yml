@@ -4,7 +4,7 @@ metadata:
   name: provisioner-main-tmp
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
@@ -45,14 +45,14 @@ spec:
           image: registry.gitlab.com/pojntfx/projects/provisioner-main
           resources:
             limits:
-              memory: 256Mi
-              cpu: 250m
+              memory: 128Mi
+              cpu: 80m
           volumeMounts:
             - name: provisioner-main-tmp
               mountPath: /tmp/pojntfx/provisioner
           env:
             - name: TRANSPORTER
-              value: redis://provisioner-redis-transporter:6379
+              value: nats://provisioner-nats:4222
       volumes:
         - name: provisioner-main-tmp
           persistentVolumeClaim:
