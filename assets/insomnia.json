@@ -324,7 +324,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\"label\": \"SDPF Boot Medium\",\n\t\"efiLabel\": \"SDPF Boot Medium EFI\",\n\t\"script\": \"#!ipxe\\nautoboot\"\n}"
+				"text": "{\n\t\"label\": \"CTPF Boot Medium\",\n\t\"efiLabel\": \"CTPF Boot Medium EFI\",\n\t\"script\": \"#!ipxe\\nautoboot\"\n}"
 			},
 			"created": 1549312565239,
 			"description": "",
