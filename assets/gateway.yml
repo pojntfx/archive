@@ -23,7 +23,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: provisioner-gateway
-          image: registry.gitlab.com/pojntfx/projects/provisioner-gateway
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-gateway
           resources:
             limits:
               memory: 128Mi

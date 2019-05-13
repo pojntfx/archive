@@ -40,7 +40,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: provisioner-repo
-          image: registry.gitlab.com/pojntfx/projects/provisioner-repo
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-repo
           resources:
             limits:
               memory: 128Mi
