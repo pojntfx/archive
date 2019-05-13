@@ -25,7 +25,7 @@ spec:
       hostNetwork: true
       containers:
         - name: provisioner-dns
-          image: registry.gitlab.com/pojntfx/projects/provisioner-dns
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-dns
           resources:
             limits:
               memory: 128Mi

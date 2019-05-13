@@ -25,7 +25,7 @@ spec:
       hostNetwork: true
       containers:
         - name: provisioner-pxeboot
-          image: registry.gitlab.com/pojntfx/projects/provisioner-pxeboot
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-pxeboot
           resources:
             limits:
               memory: 128Mi

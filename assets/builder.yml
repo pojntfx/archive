@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: provisioner-builder
-          image: registry.gitlab.com/pojntfx/projects/provisioner-builder
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-builder
           resources:
             limits:
               memory: 256Mi
