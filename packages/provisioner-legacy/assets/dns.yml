@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-dns-tmp
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-dns
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-dns
+  template:
+    metadata:
+      labels:
+        app: provisioner-dns
+    spec:
+      hostNetwork: true
+      containers:
+        - name: provisioner-dns
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-dns
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 80m
+          volumeMounts:
+            - name: provisioner-dns-tmp
+              mountPath: /tmp/pojntfx/provisioner
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          envFrom:
+            - configMapRef:
+                name: provisioner-nats-public
+      volumes:
+        - name: provisioner-dns-tmp
+          persistentVolumeClaim:
+            claimName: provisioner-dns-tmp

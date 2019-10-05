@@ -1,0 +1,36 @@
+# Base image
+FROM fedora:30
+
+# Metadata
+LABEL maintainer="Felicitas Pojtinger <felicitas@pojtinger.com> @pojntfx"
+LABEL license="AGPL-3.0"
+
+# Update the system and install dependencies
+RUN dnf update -y
+RUN dnf install -y npm iproute dnsmasq bind-utils
+
+# Setup work dir
+RUN mkdir -p /opt/pojntfx/provisioner/pxeboot
+WORKDIR /opt/pojntfx/provisioner/pxeboot
+
+# Install dependencies
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
+
+# Add source code
+COPY src src
+
+# Configure the app
+ENV SERVICEDIR="src/services/pxeboot"
+ENV SERVICES="*.js"
+ENV TRANSPORTER="TCP"
+
+# Cache files
+VOLUME [ "/tmp/pojntfx/provisioner" ]
+
+# Start the app
+CMD npm start
+
+# Expose the app
+EXPOSE 57 67 69

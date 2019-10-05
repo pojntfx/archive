@@ -1,0 +1,33 @@
+{
+  "name": "@pojntfx/provisioner",
+  "version": "0.0.1-alpha0",
+  "description": "Hosts as a service",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "docker-compose up --build",
+    "start--watch": "nodemon -x 'npm start'",
+    "start": "moleculer-runner",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Felicitas Pojtinger <felicitas@pojtinger.com>",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "localtunnel": "^1.9.1",
+    "moleculer": "^0.13.5",
+    "moleculer-bull": "^0.2.3",
+    "moleculer-db": "^0.7.7",
+    "moleculer-db-adapter-sequelize": "^0.1.11",
+    "moleculer-web": "^0.8.5",
+    "mysql2": "^1.6.4",
+    "nats": "^1.2.2",
+    "pm2": "^3.2.9",
+    "shelljs": "^0.8.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

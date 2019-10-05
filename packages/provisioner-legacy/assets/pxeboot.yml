@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-pxeboot-tmp
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-pxeboot
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-pxeboot
+  template:
+    metadata:
+      labels:
+        app: provisioner-pxeboot
+    spec:
+      hostNetwork: true
+      containers:
+        - name: provisioner-pxeboot
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-pxeboot
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 80m
+          volumeMounts:
+            - name: provisioner-pxeboot-tmp
+              mountPath: /tmp/pojntfx/provisioner
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          envFrom:
+            - configMapRef:
+                name: provisioner-nats-public
+      volumes:
+        - name: provisioner-pxeboot-tmp
+          persistentVolumeClaim:
+            claimName: provisioner-pxeboot-tmp
