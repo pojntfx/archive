@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-builder-tmp
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-builder
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-builder
+  template:
+    metadata:
+      labels:
+        app: provisioner-builder
+    spec:
+      containers:
+        - name: provisioner-builder
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-builder
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 256m
+          volumeMounts:
+            - name: provisioner-builder-tmp
+              mountPath: /tmp/pojntfx/provisioner
+          env:
+            - name: TRANSPORTER
+              value: nats://provisioner-nats:4222
+      volumes:
+        - name: provisioner-builder-tmp
+          persistentVolumeClaim:
+            claimName: provisioner-builder-tmp

@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: provisioner-main-tmp
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: provisioner-main
+data:
+  SUBSCRIPTS_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
+  KICKSTARTS_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
+  PREINSTALLSCRIPTS_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
+  POSTINSTALLSCRIPTS_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
+  REPO_MARIADB_URI: mysql://provisioner_mariadb_user:provisioner_mariadb_password@provisioner-mariadb:3306/provisioner_main
+  REDIS_PORT: "6379"
+  REDIS_HOST: provisioner-redis
+  REDIS_DB: "0"
+  REDIS_PASSWORD: provisioner_queue_db_password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioner-main
+spec:
+  selector:
+    matchLabels:
+      app: provisioner-main
+  template:
+    metadata:
+      labels:
+        app: provisioner-main
+    spec:
+      containers:
+        - name: provisioner-main
+          envFrom:
+            - configMapRef:
+                name: provisioner-main
+          image: registry.gitlab.com/pojntfx/pojntfx/provisioner-main
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 80m
+          volumeMounts:
+            - name: provisioner-main-tmp
+              mountPath: /tmp/pojntfx/provisioner
+          env:
+            - name: TRANSPORTER
+              value: nats://provisioner-nats:4222
+      volumes:
+        - name: provisioner-main-tmp
+          persistentVolumeClaim:
+            claimName: provisioner-main-tmp

@@ -1,0 +1,166 @@
+version: "3"
+
+services:
+  provisioner:
+    environment:
+      - SUBSCRIPTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - KICKSTARTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - PREINSTALLSCRIPTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - POSTINSTALLSCRIPTS_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - REPO_MARIADB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - REDIS_PORT=6379
+      - REDIS_HOST=repo_queue_db
+      - REDIS_DB=0
+      - REDIS_PASSWORD=repo_queue_db_password
+      - SERVICEDIR=src/services/provisioner
+      - SERVICES=*.js
+    build: .
+    volumes: 
+      - .:/opt/pojntfx/provisioner:z
+      - provisioner_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - provisioner_tmp:/tmp/pojntfx/provisioner:z
+    command: npm run start--watch
+    networks:
+      - main
+      - mainscripts
+    depends_on:
+      - scripts_db
+      - repo_s3
+      - repo_queue_db
+  pxeboot:
+    environment:
+      - SERVICEDIR=src/services/pxeboot
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - pxeboot_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - pxeboot_tmp:/tmp/pojntfx/provisioner:z
+      - pxeboot_etc:/etc:z
+    command: npm run start--watch
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 57:57
+      - 67:67
+      - 69:69
+  dns:
+    environment:
+      - SERVICEDIR=src/services/dns
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - dns_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - dns_tmp:/tmp/pojntfx/provisioner:z
+    command: npm run start--watch
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 53:53
+  gateway:
+    environment:
+      - GATEWAY_DB_URI=mysql://scripts_db_user:scripts_db_password@scripts_db:3306/mainscripts
+      - SERVICEDIR=src/services/gateway
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - gateway_node_modules:/opt/pojntfx/provisioner/node_modules:z
+    command: npm run start--watch
+    networks:
+      - main
+      - mainscripts
+    ports:
+      - 3000:3000
+    depends_on:
+      - pxeboot
+      - provisioner
+      - scripts_db
+      - builder
+  scripts_db:
+    environment:
+      - MARIADB_ROOT_PASSWORD=scripts_db_root_password
+      - MARIADB_USER=scripts_db_user
+      - MARIADB_PASSWORD=scripts_db_password
+      - MARIADB_DATABASE=mainscripts
+    image: bitnami/mariadb:10.2.21
+    volumes:
+      - scripts_db:/bitnami/mariadb
+    networks:
+      - mainscripts
+  repo_queue:
+    environment:
+      - MINIO_ACCESS_KEY=repo_s3
+      - MINIO_SECRET_KEY=repo_s3_password
+      - MINIO_HOST=http://repo_s3:9000
+      - REDIS_PORT=6379
+      - REDIS_HOST=repo_queue_db
+      - REDIS_DB=0
+      - REDIS_PASSWORD=repo_queue_db_password
+      - SERVICEDIR=src/services/repo
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - .:/opt/pojntfx/provisioner:z
+      - repo_queue_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - repo_queue_tmp:/tmp/pojntfx/provisioner:z
+      - repo_s3:/tmp/pojntfx/provisioner/repo:z
+    command: npm run start--watch
+    networks:
+      - main
+    depends_on:
+      - repo_s3
+  repo_s3:
+    environment:
+      - MINIO_ACCESS_KEY=repo_s3
+      - MINIO_SECRET_KEY=repo_s3_password
+    image: minio/minio:RELEASE.2019-02-06T21-16-36Z
+    volumes:
+      - repo_s3:/data:z
+    networks:
+      - main
+    ports:
+      - 9000:9000
+    command: server /data
+  repo_queue_db:
+    command: redis-server --requirepass repo_queue_db_password
+    image: redis:5.0.3
+    volumes:
+      - repo_queue_db:/data:z
+    networks:
+      - main
+    expose:
+      - 6379
+  builder:
+    environment:
+      - SERVICEDIR=src/services/build
+      - SERVICES=*.js
+    build: .
+    volumes:
+      - .:/opt/pojntfx/provisioner:z
+      - builder_node_modules:/opt/pojntfx/provisioner/node_modules:z
+      - builder_tmp:/tmp/pojntfx/provisioner:z
+    command: npm run start--watch
+    networks:
+      - main
+
+volumes:
+  provisioner_node_modules:
+  provisioner_tmp:
+  pxeboot_node_modules:
+  pxeboot_tmp:
+  pxeboot_etc:
+  dns_node_modules:
+  dns_tmp:
+  gateway_node_modules:
+  scripts_db:
+  repo_s3:
+  repo_queue_db:
+  repo_queue_node_modules:
+  repo_queue_tmp:
+  builder_node_modules:
+  builder_tmp:
+
+networks:
+  main:
+  mainscripts:

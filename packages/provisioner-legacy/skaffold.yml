@@ -1,0 +1,41 @@
+apiVersion: skaffold/v1beta4
+kind: Config
+build:
+  artifacts:
+    - image: registry.gitlab.com/pojntfx/pojntfx/provisioner-main
+      context: "."
+      docker:
+        dockerfile: assets/Dockerfile.main
+    - image: registry.gitlab.com/pojntfx/pojntfx/provisioner-builder
+      context: "."
+      docker:
+        dockerfile: assets/Dockerfile.builder
+    - image: registry.gitlab.com/pojntfx/pojntfx/provisioner-dns
+      context: "."
+      docker:
+        dockerfile: assets/Dockerfile.dns
+    - image: registry.gitlab.com/pojntfx/pojntfx/provisioner-gateway
+      context: "."
+      docker:
+        dockerfile: assets/Dockerfile.gateway
+    - image: registry.gitlab.com/pojntfx/pojntfx/provisioner-pxeboot
+      context: "."
+      docker:
+        dockerfile: assets/Dockerfile.pxeboot
+    - image: registry.gitlab.com/pojntfx/pojntfx/provisioner-repo
+      context: "."
+      docker:
+        dockerfile: assets/Dockerfile.repo
+deploy:
+  kubectl:
+    manifests:
+      - assets/main.yml
+      - assets/builder.yml
+      - assets/dns.yml
+      - assets/gateway.yml
+      - assets/pxeboot.yml
+      - assets/repo.yml
+      - assets/mariadb.yml
+      - assets/redis.yml
+      - assets/minio.yml
+      - assets/nats.yml
